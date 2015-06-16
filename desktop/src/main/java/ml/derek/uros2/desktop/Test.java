@@ -7,6 +7,7 @@ import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
+import java.util.Random;
 
 public class Test
 {
@@ -18,7 +19,9 @@ public class Test
 
     public static void detectDoor()
     {
-        Mat door = Convert.mat(new File("doors/door.jpg"));
+        File[] doorFiles = new File("doors/").listFiles();
+
+        Mat door = Convert.mat(doorFiles[new Random().nextInt(doorFiles.length)]);
 
         if(door == null)
         {
@@ -26,7 +29,9 @@ public class Test
             return;
         }
 
-        Imgproc.blur(door, door, new Size(25.0, 1));
+        Imgproc.cvtColor(door, door, Imgproc.COLOR_BGR2HLS);
+        Imgproc.threshold(door, door, 100, 255, Imgproc.THRESH_BINARY);
+        //Imgproc.blur(door, door, new Size(25.0, 1));
         Display.image(Convert.bufferedImage(door));
     }
 }

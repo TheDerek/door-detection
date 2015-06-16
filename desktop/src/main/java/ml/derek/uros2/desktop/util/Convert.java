@@ -15,6 +15,11 @@ import java.nio.IntBuffer;
 public class Convert
 {
 
+    /**
+     * Converts a BufferedImage to a a mat.
+     * @param image the Buffered Image to Convert.
+     * @return The resultant mat.
+     */
     public static Mat mat(BufferedImage image)
     {
         byte[] data = ((DataBufferByte)image.getRaster().getDataBuffer()).getData();
@@ -23,6 +28,11 @@ public class Convert
         return mat;
     }
 
+    /**
+     * Converts a image via the way of a file to a Mat
+     * @param file the file path of the image to convert.
+     * @return The resultant mat
+     */
     public static Mat mat(File file)
     {
         try
