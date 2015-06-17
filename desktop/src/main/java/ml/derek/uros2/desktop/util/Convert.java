@@ -33,18 +33,11 @@ public class Convert
      * @param file the file path of the image to convert.
      * @return The resultant mat
      */
-    public static Mat mat(File file)
+    public static Mat mat(File file) throws IOException
     {
-        try
-        {
-            BufferedImage img = ImageIO.read(file);
-            return Convert.mat(img);
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        }
 
-        return null;
+        BufferedImage img = ImageIO.read(file);
+        return Convert.mat(img);
     }
 
     public static BufferedImage bufferedImage(Mat mat)

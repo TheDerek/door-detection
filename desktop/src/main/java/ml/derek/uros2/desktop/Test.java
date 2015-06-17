@@ -7,6 +7,7 @@ import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 
 public class Test
@@ -20,8 +21,16 @@ public class Test
     public static void detectDoor()
     {
         File[] doorFiles = new File("doors/").listFiles();
+        Mat door;
 
-        Mat door = Convert.mat(doorFiles[new Random().nextInt(doorFiles.length)]);
+        try
+        {
+            door = Convert.mat(doorFiles[new Random().nextInt(doorFiles.length)]);
+        } catch (IOException | NullPointerException e)
+        {
+            e.printStackTrace();
+            return;
+        }
 
         if(door == null)
         {
