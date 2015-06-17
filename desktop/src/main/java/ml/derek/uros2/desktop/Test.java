@@ -20,6 +20,10 @@ public class Test
         Display.image(door);
     }
 
+    /**
+     * Attempts to filter an image, leaving only the door remaining
+     * @return The filtered image
+     */
     public static BufferedImage filterDoor()
     {
         File[] doorFiles = new File("doors/").listFiles();
