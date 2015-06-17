@@ -40,12 +40,12 @@ public class Convert
         return Convert.mat(img);
     }
 
-    public static BufferedImage bufferedImage(Mat mat)
+    public static BufferedImage bufferedImage(Mat mat, int type)
     {
         byte[] pixels = new byte[(int) (mat.total() * mat.channels())];
         mat.get(0, 0, pixels);
 
-        BufferedImage image = new BufferedImage(mat.width(), mat.height(), BufferedImage.TYPE_3BYTE_BGR);
+        BufferedImage image = new BufferedImage(mat.width(), mat.height(), type);
         image.getRaster().setDataElements(0, 0, mat.width(), mat.height(), pixels);
 
         return image;
