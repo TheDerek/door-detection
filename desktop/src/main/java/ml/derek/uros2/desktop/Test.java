@@ -22,7 +22,7 @@ public class Test
         File[] doorFiles = new File("doors/positive").listFiles();
         File file = doorFiles[new Random().nextInt(doorFiles.length)];
         BufferedImage image = ImageIO.read(file);
-        BufferedImage door = Detection.doorLines(image);
+        BufferedImage door = Detection.doorContours(image);
 
         JFrame frame = Display.image(door, image);
     }
