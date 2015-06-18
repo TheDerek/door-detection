@@ -19,12 +19,13 @@ public class Test
     {
         System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
 
-        File[] doorFiles = new File("doors/positive").listFiles();
-        File file = doorFiles[new Random().nextInt(doorFiles.length)];
+        File file = new File("simple/close2.jpg");
         BufferedImage image = ImageIO.read(file);
-        BufferedImage door = Detection.doorContours(image);
 
-        JFrame frame = Display.image(door, image);
+        BufferedImage doorContours = Detection.doorContours(image);
+        BufferedImage doorLines = Detection.doorLines(image);
+
+        JFrame frame = Display.image(doorContours, doorLines, image);
     }
 
 }

@@ -43,9 +43,10 @@ public class Detection
         Imgproc.HoughLinesP(door, lines, 1, Math.PI / 180, 50, 3, 50);
 
         // Draw the lines onto the image
+        Mat drawing = Mat.zeros(door.size(), CvType.CV_8UC3);
+        Random rng = new Random();
         for(int i = 0; i < lines.height(); i++)
         {
-            System.out.println("Writing line");
             double[] vec = lines.get(i, 0);
             double x1 = vec[0],
                     y1 = vec[1],
@@ -54,17 +55,12 @@ public class Detection
 
             Point start = new Point(x1, y1);
             Point end = new Point(x2, y2);
+            Scalar color = new Scalar(rng.nextInt(255), rng.nextInt(255), rng.nextInt(255));
 
-            Imgproc.line(door, start, end, new Scalar(255, 0, 0), 3);
+            Imgproc.line(drawing, start, end, color, 3);
         }
 
-
-        if(door.channels() == 1)
-            return Convert.bufferedImage(door, BufferedImage.TYPE_BYTE_GRAY);
-        else
-            return Convert.bufferedImage(door, BufferedImage.TYPE_3BYTE_BGR);
-
-
+        return Convert.bufferedImage(drawing, BufferedImage.TYPE_3BYTE_BGR);
     }
 
     public static BufferedImage doorContours(BufferedImage image)
@@ -92,7 +88,7 @@ public class Detection
         Imgproc.blur(door, door, new Size(3, 3));
 
         // Detect the edges of the image
-        Imgproc.Canny(door, door, lowThreshold, lowThreshold*ratio);
+        Imgproc.Canny(door, door, lowThreshold, lowThreshold * ratio);
 
         // Find the contours
         ArrayList<MatOfPoint> contours = new ArrayList<>();

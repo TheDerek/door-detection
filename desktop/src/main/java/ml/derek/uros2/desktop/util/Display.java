@@ -12,7 +12,11 @@ public class Display
         frame.getContentPane().setLayout(new FlowLayout());
 
         for(BufferedImage image : imgs)
-            frame.getContentPane().add(new JLabel(new ImageIcon(image)));
+        {
+            JLabel content = new JLabel(new ImageIcon(image));
+            content.setSize(100, 100);
+            frame.getContentPane().add(content);
+        }
 
         frame.pack();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
