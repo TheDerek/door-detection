@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 
 public class Display
 {
-    public static void image(BufferedImage... imgs)
+    public static JFrame image(BufferedImage... imgs)
     {
         JFrame frame = new JFrame();
         frame.getContentPane().setLayout(new FlowLayout());
@@ -17,6 +17,7 @@ public class Display
         frame.pack();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(true);
+        return frame;
     }
 
 }

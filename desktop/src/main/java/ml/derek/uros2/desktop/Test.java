@@ -7,6 +7,7 @@ import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +23,8 @@ public class Test
         File file = doorFiles[new Random().nextInt(doorFiles.length)];
         BufferedImage image = ImageIO.read(file);
         BufferedImage door = filterDoor(image);
-        Display.image(door, image);
+
+        JFrame frame = Display.image(door, image);
     }
 
     /**
@@ -38,7 +40,6 @@ public class Test
         int kernel_size = 3;
 
         Mat door;
-
 
         door = Convert.mat(image);
 
@@ -59,13 +60,13 @@ public class Test
 
         // Extract the lines from the image
         Mat lines = new Mat();
-        Imgproc.HoughLinesP(door, lines, 40, Math.PI / 180, 50, 50, 10);
+        Imgproc.HoughLinesP(door, lines, 1, Math.PI / 180, 50, 3, 50);
 
         // Draw the lines onto the image
-        for(int i = 0; i < lines.cols(); i++)
+        for(int i = 0; i < lines.height(); i++)
         {
             System.out.println("Writing line");
-            double[] vec = lines.get(0, i);
+            double[] vec = lines.get(i, 0);
             double x1 = vec[0],
                    y1 = vec[1],
                    x2 = vec[2],
@@ -77,6 +78,12 @@ public class Test
             Imgproc.line(door, start, end, new Scalar(255, 0, 0), 3);
         }
 
-        return Convert.bufferedImage(door, BufferedImage.TYPE_BYTE_GRAY);
+
+        if(door.channels() == 1)
+            return Convert.bufferedImage(door, BufferedImage.TYPE_BYTE_GRAY);
+        else
+            return Convert.bufferedImage(door, BufferedImage.TYPE_3BYTE_BGR);
+
+
     }
 }
