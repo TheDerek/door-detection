@@ -24,9 +24,12 @@ public class Test
         Mat door = Convert.mat(image);
 
         Mat lines = Detection.doorLines(door);
+
+        lines = Detection.mergeLines(lines);
+
         Mat doorLines = Draw.lines(lines, door);
 
-        Detection.mergeLines(lines);
+
 
         BufferedImage doorLinesImage = Convert.bufferedImage(doorLines);
 

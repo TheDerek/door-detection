@@ -31,7 +31,7 @@ public class Draw
         for(int i = 0; i < lines.height(); i++)
         {
             double[] vec = lines.get(i, 0);
-            double x1 = vec[0],
+            double  x1 = vec[0],
                     y1 = vec[1],
                     x2 = vec[2],
                     y2 = vec[3];

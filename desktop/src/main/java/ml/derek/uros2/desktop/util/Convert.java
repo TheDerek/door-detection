@@ -40,6 +40,33 @@ public class Convert
         return Convert.mat(img);
     }
 
+    public static Mat mat(List<Line> lines)
+    {
+        Mat mat = new Mat(4, lines.size(), CvType.CV_8UC4);
+        for(int i = 0; i < mat.height(); i++)
+        {
+            Line line = lines.get(i);
+            double[] vec = mat.get(i, 0);
+            double  x1 = vec[0],
+                    y1 = vec[1],
+                    x2 = vec[2],
+                    y2 = vec[3];
+
+            //mat.put(i, 0, line.p1.x);
+            //mat.put(i, 0, line.p1.y);
+            //mat.put(i, 0, line.p2.x);
+            //mat.put(i, 0, line.p2.y);
+
+            vec[0] = line.p1.x;
+            vec[1] = line.p1.y;
+            vec[2] = line.p2.x;
+            vec[3] = line.p2.y;
+
+        }
+
+        return mat;
+    }
+
     public static BufferedImage bufferedImage(Mat mat, int type)
     {
         byte[] pixels = new byte[(int) (mat.total() * mat.channels())];

@@ -21,9 +21,10 @@ public class Line
         return Math.toDegrees(Math.atan2(yDiff, xDiff));
     }
 
-    public boolean similarTo(Line line2, double within)
+    public boolean similarTo(Line line2, double withinAngle)
     {
-        return Math.abs(this.angle() - line2.angle()) < within;
+        boolean angle = Math.abs(this.angle() - line2.angle()) < withinAngle;
+        return angle;
     }
 
     public boolean similarTo(Line line2)
@@ -34,8 +35,8 @@ public class Line
     public Line merge(Line line2)
     {
         return new Line(
-            new Point(this.p1.x - line2.p1.x, this.p1.y - line2.p1.y),
-            new Point(this.p2.x - line2.p2.x, this.p2.y - line2.p2.y)
+            new Point((this.p1.x + line2.p1.x) / 2, (this.p1.y + line2.p1.y) / 2),
+            new Point((this.p2.x + line2.p2.x) / 2, (this.p2.y + line2.p2.y) / 2)
         );
     }
 }
