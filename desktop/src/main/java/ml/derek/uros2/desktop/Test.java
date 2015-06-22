@@ -21,11 +21,14 @@ public class Test
 
         File file = new File("simple/close2.jpg");
         BufferedImage image = ImageIO.read(file);
+        Mat door = Convert.mat(image);
 
-        BufferedImage doorContours = Detection.doorContours(image);
-        BufferedImage doorLines = Detection.doorLines(image);
+        Mat lines = Detection.doorLines(door);
+        Mat doorLines = Draw.lines(lines, door);
 
-        JFrame frame = Display.image(doorContours, doorLines, image);
+        BufferedImage doorLinesImage = Convert.bufferedImage(doorLines, )
+
+        JFrame frame = Display.image(doorLines, image);
     }
 
 }
