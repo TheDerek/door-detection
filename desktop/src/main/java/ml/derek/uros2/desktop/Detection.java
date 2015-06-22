@@ -16,13 +16,15 @@ public class Detection
      * @param image the image to get the lines from
      * @return A matrix of the lines present in the image
      */
-    public static Mat doorLines(Mat door)
+    public static Mat doorLines(Mat mat)
     {
         int edgeThresh = 1;
         int lowThreshold= 40;
         int max_lowThreshold = 100;
         int ratio = 5;
         int kernel_size = 3;
+
+        Mat door = mat.clone();
 
         if(door == null)
         {
@@ -43,7 +45,7 @@ public class Detection
         Mat lines = new Mat();
         Imgproc.HoughLinesP(door, lines, 1, Math.PI / 180, 50, 3, 50);
 
-        //Draw the lines onto the image
+        /*Draw the lines onto the image
         Mat drawing = Mat.zeros(door.size(), CvType.CV_8UC3);
         Random rng = new Random();
         for(int i = 0; i < lines.height(); i++)
@@ -59,9 +61,9 @@ public class Detection
             Scalar color = new Scalar(rng.nextInt(255), rng.nextInt(255), rng.nextInt(255));
 
             Imgproc.line(drawing, start, end, color, 3);
-        }
+        }*/
 
-        return drawing;
+        return lines;
     }
 
     public static BufferedImage doorContours(BufferedImage image)

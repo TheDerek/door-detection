@@ -23,7 +23,9 @@ public class Draw
     public static Mat lines(Mat lines, Mat baseImage)
     {
         // Copy the baseImage so we don't override it
-        Mat background = baseImage.clone();
+        Mat drawing = Mat.zeros(baseImage.size(), CvType.CV_8UC3);
+
+
         Random rng = new Random();
 
         for(int i = 0; i < lines.height(); i++)
@@ -38,10 +40,10 @@ public class Draw
             Point end = new Point(x2, y2);
             Scalar color = new Scalar(rng.nextInt(255), rng.nextInt(255), rng.nextInt(255));
 
-            Imgproc.line(background, start, end, color, 3);
+            Imgproc.line(drawing, start, end, color, 3);
         }
 
         // Return the new image with the lines
-        return background;
+        return drawing;
     }
 }
