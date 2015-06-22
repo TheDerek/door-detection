@@ -3,6 +3,7 @@ package ml.derek.uros2.desktop.util;
 import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -11,6 +12,7 @@ import java.awt.image.DataBufferInt;
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Convert
@@ -65,6 +67,27 @@ public class Convert
         }
         System.out.println(mat.dump());
         return mat;
+    }
+
+    public static List<Line> list(Mat mat)
+    {
+        ArrayList<Line> lineList = new ArrayList<>();
+
+        // Build up a list of lines in the image
+        for(int i = 0; i < mat.height(); i++)
+        {
+            double[] vec = mat.get(i, 0);
+            double  x1 = vec[0],
+                    y1 = vec[1],
+                    x2 = vec[2],
+                    y2 = vec[3];
+
+            Point start = new Point(x1, y1);
+            Point end = new Point(x2, y2);
+            lineList.add(new Line(start, end));
+        }
+
+        return lineList;
     }
 
     public static BufferedImage bufferedImage(Mat mat, int type)

@@ -52,25 +52,11 @@ public class Detection
     public static List<Line> mergeLines(Mat unmerged)
     {
         System.out.println(unmerged.dump());
-        ArrayList<Line> lineList = new ArrayList<>();
         ArrayList<Line> mergedLineList = new ArrayList<>();
-
-        // Build up a list of lines in the image
-        for(int i = 0; i < unmerged.height(); i++)
-        {
-            double[] vec = unmerged.get(i, 0);
-            double  x1 = vec[0],
-                    y1 = vec[1],
-                    x2 = vec[2],
-                    y2 = vec[3];
-
-            Point start = new Point(x1, y1);
-            Point end = new Point(x2, y2);
-            lineList.add(new Line(start, end));
-        }
+        List<Line> lineList = Convert.list(unmerged);
 
         // Compare each line to every other line
-        /*
+
         for(Line line1 : lineList)
         {
             for(Line line2 : lineList)
@@ -79,15 +65,15 @@ public class Detection
                 {
                     if(line1.angle() != 0 && line1.angle() != -90 &&
                             line2.angle() != 0 && line2.angle() != 0)
-                        if(line1.similarTo(line2))
+                        if(line1.similarTo(line2, 1))
                         {
                             System.out.println(line2.angle() + ", " + line2.angle());
-                            mergedLineList.add(line2.merge(line2));
+                            mergedLineList.add(line2.merge(line1));
                         }
                 }
             }
-        }*/
+        }
 
-        return lineList;
+        return mergedLineList;
     }
 }

@@ -18,3 +18,7 @@
 |                  | - Can take note of the floor and   | edge, need to be merged reliably       |
 |                  | use its horizon line to verify the |                                        |
 |                  | the integrity of the line          |                                        |
+|------------------+------------------------------------+----------------------------------------|
+| Ransac           | -                                  |                                        |
+|------------------+------------------------------------+----------------------------------------|
+|                  |                                    |                                        |

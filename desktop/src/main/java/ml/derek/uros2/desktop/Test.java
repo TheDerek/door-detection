@@ -21,18 +21,15 @@ public class Test
     {
         System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
 
-        File file = new File("simple/close2.jpg");
+        File file = new File("simple/far2.jpg");
         BufferedImage image = ImageIO.read(file);
         Mat door = Convert.mat(image);
 
         Mat lines = Detection.doorLines(door);
-
-        List<Line> lineList = Detection.mergeLines(lines);
-        Mat doorLines = Draw.lines(lineList, door);
+        Mat doorLines = Draw.lines(lines, door);
 
         BufferedImage doorLinesImage = Convert.bufferedImage(doorLines);
 
         JFrame frame = Display.image(doorLinesImage, image);
     }
-
 }
