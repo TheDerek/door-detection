@@ -8,6 +8,7 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Detection
 {
@@ -48,8 +49,9 @@ public class Detection
         return lines;
     }
 
-    public static Mat mergeLines(Mat unmerged)
+    public static List<Line> mergeLines(Mat unmerged)
     {
+        System.out.println(unmerged.dump());
         ArrayList<Line> lineList = new ArrayList<>();
         ArrayList<Line> mergedLineList = new ArrayList<>();
 
@@ -68,6 +70,7 @@ public class Detection
         }
 
         // Compare each line to every other line
+        /*
         for(Line line1 : lineList)
         {
             for(Line line2 : lineList)
@@ -83,8 +86,8 @@ public class Detection
                         }
                 }
             }
-        }
+        }*/
 
-        return Convert.mat(mergedLineList);
+        return lineList;
     }
 }

@@ -1,6 +1,7 @@
 package ml.derek.uros2.desktop;
 
 import ml.derek.uros2.desktop.util.Convert;
+import ml.derek.uros2.desktop.util.Line;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 
@@ -46,4 +47,24 @@ public class Draw
         // Return the new image with the lines
         return drawing;
     }
+
+    public static Mat lines(List<Line> lines, Mat baseImage)
+    {
+        // Copy the baseImage so we don't override it
+        Mat drawing = baseImage.clone();
+
+
+        Random rng = new Random();
+
+        for(Line line : lines)
+        {
+            Scalar color = new Scalar(rng.nextInt(255), rng.nextInt(255), rng.nextInt(255));
+            Imgproc.line(drawing, line.p1, line.p2, color, 3);
+        }
+
+        // Return the new image with the lines
+        return drawing;
+    }
+
+
 }

@@ -3,6 +3,7 @@ package ml.derek.uros2.desktop;
 
 import ml.derek.uros2.desktop.util.Convert;
 import ml.derek.uros2.desktop.util.Display;
+import ml.derek.uros2.desktop.util.Line;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 
@@ -11,6 +12,7 @@ import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Random;
 
 public class Test
@@ -25,11 +27,8 @@ public class Test
 
         Mat lines = Detection.doorLines(door);
 
-        lines = Detection.mergeLines(lines);
-
-        Mat doorLines = Draw.lines(lines, door);
-
-
+        List<Line> lineList = Detection.mergeLines(lines);
+        Mat doorLines = Draw.lines(lineList, door);
 
         BufferedImage doorLinesImage = Convert.bufferedImage(doorLines);
 
