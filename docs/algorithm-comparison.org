@@ -1,0 +1,20 @@
+* Comparison between different algorithms and approaches to detecting doors
+|------------------+------------------------------------+----------------------------------------|
+| Approach         | Advantages                         | Disadvantages                          |
+|------------------+------------------------------------+----------------------------------------|
+| Machine Learning | -                                  | - Requires high set of sample images,  |
+|                  |                                    | labour intensive to gather.            |
+|                  |                                    | - High processing time, difficult to   |
+|                  |                                    | do real time.                          |
+|                  |                                    | - Doors vary widely in appearance      |
+|                  |                                    | which makes detecting similar features |
+|                  |                                    | difficult if not impossible            |
+|------------------+------------------------------------+----------------------------------------|
+| Edge Detection   | - Relatively fast, should be fine  | - Confusion with other rectangular     |
+|                  | in real time.                      | objects in the surrounding area.       |
+|                  | - Can operate on the aspect ratio  | - Many lines generated which are not   |
+|                  | of doors and take into account     | relevant to the door being detected.   |
+|                  | their geometric properties.        | - Multiple lines for a single door     |
+|                  | - Can take note of the floor and   | edge, need to be merged reliably       |
+|                  | use its horizon line to verify the |                                        |
+|                  | the integrity of the line          |                                        |

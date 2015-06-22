@@ -13,7 +13,7 @@ public class Detection
 {
     /**
      * Returns the lines from the image
-     * @param image the image to get the lines from
+     * @param mat the image to get the lines from
      * @return A matrix of the lines present in the image
      */
     public static Mat doorLines(Mat mat)
@@ -65,6 +65,8 @@ public class Detection
 
         return lines;
     }
+
+
 
     public static BufferedImage doorContours(BufferedImage image)
     {
