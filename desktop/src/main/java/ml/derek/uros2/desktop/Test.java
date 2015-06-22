@@ -26,9 +26,9 @@ public class Test
         Mat lines = Detection.doorLines(door);
         Mat doorLines = Draw.lines(lines, door);
 
-        BufferedImage doorLinesImage = Convert.bufferedImage(doorLines, )
+        BufferedImage doorLinesImage = Convert.bufferedImage(lines);
 
-        JFrame frame = Display.image(doorLines, image);
+        JFrame frame = Display.image(doorLinesImage, image);
     }
 
 }

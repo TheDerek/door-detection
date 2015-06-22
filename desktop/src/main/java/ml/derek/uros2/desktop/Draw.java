@@ -42,5 +42,6 @@ public class Draw
         }
 
         // Return the new image with the lines
+        return background;
     }
 }

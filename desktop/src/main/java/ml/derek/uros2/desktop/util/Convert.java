@@ -35,7 +35,6 @@ public class Convert
      */
     public static Mat mat(File file) throws IOException
     {
-
         BufferedImage img = ImageIO.read(file);
         return Convert.mat(img);
     }
@@ -49,5 +48,10 @@ public class Convert
         image.getRaster().setDataElements(0, 0, mat.width(), mat.height(), pixels);
 
         return image;
+    }
+
+    public static BufferedImage bufferedImage(Mat mat)
+    {
+        return bufferedImage(mat, BufferedImage.TYPE_3BYTE_BGR);
     }
 }
