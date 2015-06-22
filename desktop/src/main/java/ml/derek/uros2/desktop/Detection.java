@@ -24,13 +24,9 @@ public class Detection
         int ratio = 5;
         int kernel_size = 3;
 
-        Mat door;
-
-        door = Convert.mat(image);
-
         if(door == null)
         {
-            System.out.println("Couldn't load file");
+            System.out.println("Couldn't load mat");
             return null;
         }
 
@@ -65,7 +61,7 @@ public class Detection
             Imgproc.line(drawing, start, end, color, 3);
         }
 
-        return Convert.bufferedImage(drawing, BufferedImage.TYPE_3BYTE_BGR);
+        return lines;
     }
 
     public static BufferedImage doorContours(BufferedImage image)
