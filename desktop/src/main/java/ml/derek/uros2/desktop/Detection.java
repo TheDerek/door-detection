@@ -61,7 +61,7 @@ public class Detection
             Imgproc.line(drawing, start, end, color, 3);
         }
 
-        return lines;
+        return drawing;
     }
 
     public static BufferedImage doorContours(BufferedImage image)
