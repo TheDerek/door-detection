@@ -23,7 +23,7 @@ public class Draw
     public static Mat lines(Mat lines, Mat baseImage)
     {
         // Copy the baseImage so we don't override it
-        Mat drawing = Mat.zeros(baseImage.size(), CvType.CV_8UC3);
+        Mat drawing = baseImage.clone();
 
 
         Random rng = new Random();
