@@ -19,12 +19,14 @@ public class Test
     {
         System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
 
-        File file = new File("simple/far1.jpg");
+        File file = new File("simple/close2.jpg");
         BufferedImage image = ImageIO.read(file);
         Mat door = Convert.mat(image);
 
         Mat lines = Detection.doorLines(door);
         Mat doorLines = Draw.lines(lines, door);
+
+        Detection.mergeLines(lines);
 
         BufferedImage doorLinesImage = Convert.bufferedImage(doorLines);
 
