@@ -2,13 +2,13 @@ package ml.derek.uros2.desktop;
 
 import ml.derek.uros2.desktop.util.Convert;
 import ml.derek.uros2.desktop.util.Line;
-import org.opencv.core.Mat;
-import org.opencv.core.Point;
-import org.opencv.core.Size;
+import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Detection
 {
@@ -75,5 +75,46 @@ public class Detection
         }
 
         return mergedLineList;
+    }
+
+    public static List<MatOfPoint> doorContours(Mat image)
+    {
+        int edgeThresh = 1;
+        int lowThreshold= 40;
+        int max_lowThreshold = 100;
+        int ratio = 5;
+        int kernel_size = 3;
+
+        Mat door = image.clone();
+        if(door == null)
+        {
+            System.out.println("Couldn't load file");
+            return null;
+        }
+
+        //Convert image to greyscale
+        Imgproc.cvtColor(door, door, Imgproc.COLOR_BGR2GRAY);
+
+        //Remove noise from the image
+        Imgproc.blur(door, door, new Size(3, 3));
+
+        // Detect the edges of the image
+        Imgproc.Canny(door, door, lowThreshold, lowThreshold * ratio);
+
+        // Find the contours
+        ArrayList<MatOfPoint> contours = new ArrayList<>();
+        Mat hierarchy = new Mat();
+        Imgproc.findContours(door, contours, hierarchy, 3, 2, new Point(0, 0));
+
+        // Draw contours
+        Mat drawing = Mat.zeros(door.size(), CvType.CV_8UC3);
+        Random rng = new Random();
+        for( int i = 0; i < contours.size(); i++ )
+        {
+            Scalar color = new Scalar(rng.nextInt(255), rng.nextInt(255), rng.nextInt(255));
+            Imgproc.drawContours(drawing, contours, i, color, 2, 8, hierarchy, 0, new Point());
+        }
+
+       return contours;
     }
 }

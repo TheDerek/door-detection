@@ -26,10 +26,14 @@ public class Test
         Mat door = Convert.mat(image);
 
         Mat lines = Detection.doorLines(door);
+        List<MatOfPoint> contours = Detection.doorContours(door);
+
         Mat doorLines = Draw.lines(lines, door);
+        Mat contourMat = Draw.contours(contours, door);
 
         BufferedImage doorLinesImage = Convert.bufferedImage(doorLines);
+        BufferedImage contourImage = Convert.bufferedImage(contourMat);
 
-        JFrame frame = Display.image(doorLinesImage, image);
+        JFrame frame = Display.image(doorLinesImage, contourImage, image);
     }
 }

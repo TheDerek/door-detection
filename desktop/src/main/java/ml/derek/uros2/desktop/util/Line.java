@@ -44,4 +44,9 @@ public class Line
             new Point((this.p2.x + line2.p2.x) / 2, (this.p2.y + line2.p2.y) / 2)
         );
     }
+
+    public Point intersect(Line that)
+    {
+        return null;
+    }
 }
