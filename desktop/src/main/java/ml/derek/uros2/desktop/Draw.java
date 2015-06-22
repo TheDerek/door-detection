@@ -70,5 +70,30 @@ public class Draw
         return drawing;
     }
 
+    public static Mat rect(Rect rect, Mat baseImage)
+    {
+        Mat drawing = baseImage.clone();
+        Random rng = new Random();
+
+        Scalar color = new Scalar(255, 0, 0);
+        Imgproc.rectangle(drawing, rect.br(), rect.tl(), color);
+
+
+        return drawing;
+    }
+
+    public static Mat rects(List<Rect> rects, Mat baseImage)
+    {
+        Mat drawing = baseImage.clone();
+        Random rng = new Random();
+        for(Rect rect : rects)
+        {
+            Scalar color = new Scalar(rng.nextInt(255), rng.nextInt(255), rng.nextInt(255));
+            Imgproc.rectangle(drawing, rect.br(), rect.tl(), color);
+        }
+
+        return drawing;
+    }
+
 
 }

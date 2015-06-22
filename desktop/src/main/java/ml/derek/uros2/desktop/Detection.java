@@ -117,4 +117,26 @@ public class Detection
 
        return contours;
     }
+
+    public static List<Rect> getBounds(List<MatOfPoint> contours)
+    {
+        List<Rect> rects = new ArrayList<>();
+
+        for(MatOfPoint contour : contours)
+            rects.add(Imgproc.boundingRect(contour));
+
+        return rects;
+    }
+
+    public static Rect largestRect(List<Rect> rects)
+    {
+        Rect largestRect = rects.get(0);
+        for(Rect rect : rects)
+        {
+            if(rect.area() > largestRect.area())
+                largestRect = rect;
+        }
+
+        return largestRect;
+    }
 }
