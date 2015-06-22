@@ -43,7 +43,7 @@ public class Detection
         Mat lines = new Mat();
         Imgproc.HoughLinesP(door, lines, 1, Math.PI / 180, 50, 3, 50);
 
-        // Draw the lines onto the image
+        //Draw the lines onto the image
         Mat drawing = Mat.zeros(door.size(), CvType.CV_8UC3);
         Random rng = new Random();
         for(int i = 0; i < lines.height(); i++)
