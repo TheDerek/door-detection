@@ -1,7 +1,0 @@
-* Comparison between different algorithms and approaches to detecting doors
-| Approach         | Advantages | Disadvantages                         |
-|------------------+------------+---------------------------------------|
-| Machine Learning | -          | - Requires high set of sample images, |
-|                  |            | labour intensive to gather.           |
-|                  |            | - High processing time, dfficult to,  |
-|                  |            |                                       |
