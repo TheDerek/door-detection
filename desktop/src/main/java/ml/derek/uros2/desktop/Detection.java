@@ -11,7 +11,12 @@ import java.util.Random;
 
 public class Detection
 {
-    public static BufferedImage doorLines(BufferedImage image)
+    /**
+     * Returns the lines from the image
+     * @param image the image to get the lines from
+     * @return A matrix of the lines present in the image
+     */
+    public static Mat doorLines(Mat door)
     {
         int edgeThresh = 1;
         int lowThreshold= 40;
