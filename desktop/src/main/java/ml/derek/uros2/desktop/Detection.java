@@ -10,9 +10,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Detection
 {
@@ -146,17 +144,37 @@ public class Detection
 
         List<MatOfPoint> contours = Detection.doorContours(doorLines);
         List<Rect> rects = Detection.getBounds(contours);
+        Collections.sort(rects, new Comparator<Rect>()
+        {
+            @Override
+            public int compare(Rect o1, Rect o2)
+            {
+                return o1.area() > o2.area() ? -1 : 1;
+            }
+        });
 
 
         if(rects.size() == 0)
             return null;
         else
-            return Detection.largestRect(rects);
+        {
+            for(Rect rect : rects)
+            {
+                if(Detection.withinAspectRatio(rect, 1.81, 3.29))
+                    return rect;
+            }
+
+            return null;
+        }
     }
 
-    public boolean withinAspectRatio(Rect rect, double ratio, double boundries)
+    /**
+     * Checks to see if the given rectangle is within the aspect ratio.
+     * Ratio is checked using height / width
+     */
+    public static boolean withinAspectRatio(Rect rect, double lowerBound, double upperbound)
     {
-        double rectRatio = rect.width / rect.height;
-        return Math.abs(rectRatio - ratio) < boundries;
+        double rectRatio = rect.height / rect.width;
+        return rectRatio < upperbound && rectRatio > lowerBound;
     }
 }
