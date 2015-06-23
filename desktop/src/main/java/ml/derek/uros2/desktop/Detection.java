@@ -147,9 +147,16 @@ public class Detection
         List<MatOfPoint> contours = Detection.doorContours(doorLines);
         List<Rect> rects = Detection.getBounds(contours);
 
+
         if(rects.size() == 0)
             return null;
         else
             return Detection.largestRect(rects);
+    }
+
+    public boolean withinAspectRatio(Rect rect, double ratio, double boundries)
+    {
+        double rectRatio = rect.width / rect.height;
+        return Math.abs(rectRatio - ratio) < boundries;
     }
 }
