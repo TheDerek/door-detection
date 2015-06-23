@@ -6,11 +6,15 @@ import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
+import ml.derek.uros2.desktop.Detection;
+import ml.derek.uros2.desktop.Draw;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Mat;
+import org.opencv.core.Rect;
+import org.opencv.imgproc.Imgproc;
 
 public class MyActivity extends Activity implements CameraBridgeViewBase.CvCameraViewListener2
 {
@@ -84,6 +88,8 @@ public class MyActivity extends Activity implements CameraBridgeViewBase.CvCamer
 
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame)
     {
-        return inputFrame.rgba();
+        Mat newImage = inputFrame.rgba();
+        Imgproc.Canny(newImage, newImage, 40, 40 * 5);
+        return newImage;
     }
 }

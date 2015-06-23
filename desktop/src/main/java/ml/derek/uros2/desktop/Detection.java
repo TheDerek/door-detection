@@ -1,11 +1,15 @@
 package ml.derek.uros2.desktop;
 
 import ml.derek.uros2.desktop.util.Convert;
+import ml.derek.uros2.desktop.util.Display;
 import ml.derek.uros2.desktop.util.Line;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -133,5 +137,16 @@ public class Detection
         }
 
         return largestRect;
+    }
+
+    public static Rect detectDoor(Mat door)
+    {
+        Mat lines = Detection.doorLines(door);
+        Mat doorLines = Draw.lines(lines, new Mat(door.rows(), door.width(), door.type()));
+
+        List<MatOfPoint> contours = Detection.doorContours(doorLines);
+        List<Rect> rects = Detection.getBounds(contours);
+
+        return Detection.largestRect(rects);
     }
 }
