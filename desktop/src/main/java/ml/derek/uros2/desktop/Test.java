@@ -21,17 +21,19 @@ public class Test
     {
         System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
 
-        File file = new File("simple/far2.jpg");
+        File file = new File("simple/close1.jpg");
         BufferedImage image = ImageIO.read(file);
         Mat door = Convert.mat(image);
 
         Mat lines = Detection.doorLines(door);
-        List<MatOfPoint> contours = Detection.doorContours(door);
+        Mat doorLines = Draw.lines(lines, new Mat(door.rows(), door.width(), door.type()));
+
+        List<MatOfPoint> contours = Detection.doorContours(doorLines);
         List<Rect> rects = Detection.getBounds(contours);
 
-        Mat doorLines = Draw.lines(lines, door);
         Mat contourMat = Draw.contours(contours, door);
         Mat rectangle = Draw.rect(Detection.largestRect(rects), door);
+        //rectangle = Draw.rects(rects, rectangle);
 
         BufferedImage doorLinesImage = Convert.bufferedImage(doorLines);
         BufferedImage contourImage = Convert.bufferedImage(contourMat);

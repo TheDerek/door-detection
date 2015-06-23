@@ -15,11 +15,13 @@ public class Draw
     public static Mat contours(List<MatOfPoint> contours, Mat baseImage)
     {
         Random rng = new Random();
-        Mat drawing = baseImage.clone();
+        //Mat drawing = baseImage.clone();
+        Mat drawing = new Mat(baseImage.rows(), baseImage.cols(), baseImage.type());
         for( int i = 0; i < contours.size(); i++ )
         {
             Scalar color = new Scalar(rng.nextInt(255), rng.nextInt(255), rng.nextInt(255));
-            Imgproc.drawContours(drawing, contours, i, color, 2, 8, new Mat(), 0, new Point());
+            Imgproc.drawContours(drawing, contours, i, color, -1, Imgproc.RETR_FLOODFILL, new Mat(), 0, new Point());
+            Imgproc.fillConvexPoly(drawing, contours.get(i), color);
         }
 
         return drawing;
@@ -44,6 +46,7 @@ public class Draw
             Point start = new Point(x1, y1);
             Point end = new Point(x2, y2);
             Scalar color = new Scalar(rng.nextInt(255), rng.nextInt(255), rng.nextInt(255));
+            Scalar red = new Scalar(255, 0, 0);
 
             Imgproc.line(drawing, start, end, color, 2);
         }

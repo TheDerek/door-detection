@@ -33,7 +33,7 @@ public class Detection
             return null;
         }
 
-        //Convert image to greyscale
+        // Convert image to greyscale
         Imgproc.cvtColor(door, door, Imgproc.COLOR_BGR2GRAY);
 
         //Remove noise from the image
@@ -104,16 +104,8 @@ public class Detection
         // Find the contours
         ArrayList<MatOfPoint> contours = new ArrayList<>();
         Mat hierarchy = new Mat();
-        Imgproc.findContours(door, contours, hierarchy, 3, 2, new Point(0, 0));
+        Imgproc.findContours(door, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE, new Point(0, 0));
 
-        // Draw contours
-        Mat drawing = Mat.zeros(door.size(), CvType.CV_8UC3);
-        Random rng = new Random();
-        for( int i = 0; i < contours.size(); i++ )
-        {
-            Scalar color = new Scalar(rng.nextInt(255), rng.nextInt(255), rng.nextInt(255));
-            Imgproc.drawContours(drawing, contours, i, color, 2, 8, hierarchy, 0, new Point());
-        }
 
        return contours;
     }
@@ -123,7 +115,10 @@ public class Detection
         List<Rect> rects = new ArrayList<>();
 
         for(MatOfPoint contour : contours)
-            rects.add(Imgproc.boundingRect(contour));
+        {
+            //if(Imgproc.isContourConvex(contour))
+                rects.add(Imgproc.boundingRect(contour));
+        }
 
         return rects;
     }
