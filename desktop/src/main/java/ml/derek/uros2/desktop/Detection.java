@@ -147,6 +147,9 @@ public class Detection
         List<MatOfPoint> contours = Detection.doorContours(doorLines);
         List<Rect> rects = Detection.getBounds(contours);
 
-        return Detection.largestRect(rects);
+        if(rects.size() == 0)
+            return null;
+        else
+            return Detection.largestRect(rects);
     }
 }

@@ -32,6 +32,7 @@ public class MyActivity extends Activity implements CameraBridgeViewBase.CvCamer
         mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.HelloOpenCvView);
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
         mOpenCvCameraView.setCvCameraViewListener(this);
+        mOpenCvCameraView.setMaxFrameSize(640, 360);
     }
 
     @Override
@@ -68,7 +69,7 @@ public class MyActivity extends Activity implements CameraBridgeViewBase.CvCamer
     public void onResume()
     {
         super.onResume();
-        OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_6, this, mLoaderCallback);
+        OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
     }
 
     public void onDestroy()
@@ -89,7 +90,11 @@ public class MyActivity extends Activity implements CameraBridgeViewBase.CvCamer
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame)
     {
         Mat newImage = inputFrame.rgba();
-        Imgproc.Canny(newImage, newImage, 40, 40 * 5);
-        return newImage;
+        Rect doorRect = Detection.detectDoor(newImage);
+
+        if(doorRect != null)
+            return Draw.rect(doorRect, newImage);
+        else
+            return newImage;
     }
 }
