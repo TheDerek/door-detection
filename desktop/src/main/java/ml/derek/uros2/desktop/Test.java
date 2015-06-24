@@ -21,7 +21,7 @@ public class Test
     {
         System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
 
-        File file = new File("simple/close1.jpg");
+        File file = new File("simple/door3.jpg");
         BufferedImage image = ImageIO.read(file);
         Mat door = Convert.mat(image);
 
@@ -30,12 +30,13 @@ public class Test
 
         List<MatOfPoint> contours = Detection.doorContours(doorLines);
         List<Rect> rects = Detection.getBounds(contours);
+        List<MatOfPoint> hulls = Detection.convexHulls(contours);
 
         Mat contourMat = Draw.contours(contours, door);
         Mat rectangle = Draw.rect(Detection.largestRect(rects), door);
-        //rectangle = Draw.rects(rects, rectangle);
+        Mat hullMat = Draw.convexHulls(hulls, door);
 
-        BufferedImage doorLinesImage = Convert.bufferedImage(doorLines);
+        BufferedImage doorLinesImage = Convert.bufferedImage(hullMat);
         BufferedImage contourImage = Convert.bufferedImage(contourMat);
         BufferedImage rectImage = Convert.bufferedImage(rectangle);
 

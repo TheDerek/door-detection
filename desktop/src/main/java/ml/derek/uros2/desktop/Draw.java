@@ -20,8 +20,8 @@ public class Draw
         for( int i = 0; i < contours.size(); i++ )
         {
             Scalar color = new Scalar(rng.nextInt(255), rng.nextInt(255), rng.nextInt(255));
-            Imgproc.drawContours(drawing, contours, i, color, -1, Imgproc.RETR_FLOODFILL, new Mat(), 0, new Point());
-            Imgproc.fillConvexPoly(drawing, contours.get(i), color);
+            Imgproc.drawContours(drawing, contours, i, color, 1, Imgproc.RETR_FLOODFILL, new Mat(), 0, new Point());
+            //Imgproc.fillConvexPoly(drawing, contours.get(i), color);
         }
 
         return drawing;
@@ -93,6 +93,20 @@ public class Draw
         {
             Scalar color = new Scalar(rng.nextInt(255), rng.nextInt(255), rng.nextInt(255));
             Imgproc.rectangle(drawing, rect.br(), rect.tl(), color);
+        }
+
+        return drawing;
+    }
+
+    public static Mat convexHulls(List<MatOfPoint> hulls, Mat baseImage)
+    {
+        Random rng = new Random();
+        //Mat drawing = baseImage.clone();
+        Mat drawing = new Mat(baseImage.rows(), baseImage.cols(), baseImage.type());
+        for( int i = 0; i < hulls.size(); i++ )
+        {
+            Scalar color = new Scalar(rng.nextInt(255), rng.nextInt(255), rng.nextInt(255));
+            Imgproc.drawContours(drawing, hulls, i, color, 1, Imgproc.RETR_FLOODFILL, new Mat(), 0, new Point());
         }
 
         return drawing;

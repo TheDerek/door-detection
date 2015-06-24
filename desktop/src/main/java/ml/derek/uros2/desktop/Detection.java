@@ -51,33 +51,39 @@ public class Detection
         return lines;
     }
 
-    public static List<Line> mergeLines(Mat unmerged)
+    public static MatOfInt convexHull(MatOfPoint contour)
     {
-        System.out.println(unmerged.dump());
-        ArrayList<Line> mergedLineList = new ArrayList<>();
-        List<Line> lineList = Convert.list(unmerged);
+        MatOfInt hull = new MatOfInt();
+        Imgproc.convexHull(contour, hull);
+        return hull;
+    }
 
-        // Compare each line to every other line
+    public static List<MatOfPoint> convexHulls(List<MatOfPoint> contours)
+    {
+        List<MatOfPoint> hulls = new ArrayList<>();
 
-        for(Line line1 : lineList)
+        for(MatOfPoint contour: contours)
         {
-            for(Line line2 : lineList)
+            MatOfInt indices = new MatOfInt();
+            Imgproc.convexHull(contour, indices);
+
+            MatOfPoint hull = new MatOfPoint();
+            hull.create(indices.size(), CvType.CV_32SC2);
+            for(int i = 0; i < indices.size().height ; i++)
             {
-                if(!line1.equals(line2))
-                {
-                    if(line1.angle() != 0 && line1.angle() != -90 &&
-                            line2.angle() != 0 && line2.angle() != 0)
-                        if(line1.similarTo(line2, 1))
-                        {
-                            System.out.println(line2.angle() + ", " + line2.angle());
-                            mergedLineList.add(line2.merge(line1));
-                        }
-                }
+                int index = (int)indices.get(i, 0)[0];
+                double[] point = new double[] {
+                        contour.get(index, 0)[0], contour.get(index, 0)[1]
+                };
+                hull.put(i, 0, point);
             }
+
+            hulls.add(hull);
         }
 
-        return mergedLineList;
+        return hulls;
     }
+
 
     public static List<MatOfPoint> doorContours(Mat image)
     {
@@ -139,10 +145,10 @@ public class Detection
 
     public static Rect detectDoor(Mat door)
     {
-        Mat lines = Detection.doorLines(door);
-        Mat doorLines = Draw.lines(lines, new Mat(door.rows(), door.width(), door.type()));
+        //Mat lines = Detection.doorLines(door);
+        //Mat doorLines = Draw.lines(lines, new Mat(door.rows(), door.width(), door.type()));
 
-        List<MatOfPoint> contours = Detection.doorContours(doorLines);
+        List<MatOfPoint> contours = Detection.doorContours(door);
         List<Rect> rects = Detection.getBounds(contours);
         Collections.sort(rects, new Comparator<Rect>()
         {
