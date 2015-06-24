@@ -33,8 +33,8 @@
 |                  | ratio as defined by ISO standards         | objects to be erroneously detected as  |
 |                  |                                           | doors                                  |
 |------------------+-------------------------------------------+----------------------------------------|
-| Contour + Convex | - Improvement on Contour Boxing           |                                        |
-| Hull             | - Eliminates shapes whose bounding box is |                                        |
+| Contour + Convex | - Improvement on Contour Boxing           | - More computationally expensive than  |
+| Hull             | - Eliminates shapes whose bounding box is | using rectangles                       |
 |                  | similar to that of a door                 |                                        |
 |                  | - Allows for better detection of doors    |                                        |
 |                  | that are not parallel with the camera     |                                        |
@@ -43,3 +43,11 @@
 |                  | matches                                   |                                        |
 |                  | - Can check if opposite sides of the door |                                        |
 |                  | are parallel and equal in length          |                                        |
+|                  | - Can compute rectangles first and then   |                                        |
+|                  | hulls in descending order of area to      |                                        |
+|                  | maximise performance (Will have to run    |                                        |
+|                  | tests to confirm which way is more        |                                        |
+|                  | efficient)                                |                                        |
+|------------------+-------------------------------------------+----------------------------------------|
+|                  |                                           |                                        |
+
