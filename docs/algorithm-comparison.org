@@ -1,24 +1,45 @@
 * Comparison between different algorithms and approaches to detecting doors
-|------------------+------------------------------------+----------------------------------------|
-| Approach         | Advantages                         | Disadvantages                          |
-|------------------+------------------------------------+----------------------------------------|
-| Machine Learning | -                                  | - Requires high set of sample images,  |
-|                  |                                    | labour intensive to gather.            |
-|                  |                                    | - High processing time, difficult to   |
-|                  |                                    | do real time.                          |
-|                  |                                    | - Doors vary widely in appearance      |
-|                  |                                    | which makes detecting similar features |
-|                  |                                    | difficult if not impossible            |
-|------------------+------------------------------------+----------------------------------------|
-| Edge Detection   | - Relatively fast, should be fine  | - Confusion with other rectangular     |
-|                  | in real time.                      | objects in the surrounding area.       |
-|                  | - Can operate on the aspect ratio  | - Many lines generated which are not   |
-|                  | of doors and take into account     | relevant to the door being detected.   |
-|                  | their geometric properties.        | - Multiple lines for a single door     |
-|                  | - Can take note of the floor and   | edge, need to be merged reliably       |
-|                  | use its horizon line to verify the |                                        |
-|                  | the integrity of the line          |                                        |
-|------------------+------------------------------------+----------------------------------------|
-| Ransac           | -                                  |                                        |
-|------------------+------------------------------------+----------------------------------------|
-|                  |                                    |                                        |
+|------------------+-------------------------------------------+----------------------------------------|
+| Approach         | Advantages                                | Disadvantages                          |
+|------------------+-------------------------------------------+----------------------------------------|
+| Machine Learning | - Thorough documentation and              | - Requires high set of sample images,  |
+|                  | examples                                  | labour intensive to gather.            |
+|                  |                                           | - High processing time, difficult to   |
+|                  |                                           | do real time.                          |
+|                  |                                           | - Doors vary widely in appearance      |
+|                  |                                           | which makes detecting similar features |
+|                  |                                           | difficult if not impossible            |
+|------------------+-------------------------------------------+----------------------------------------|
+| Edge Detection   | - Relatively fast, should be fine         | - Confusion with other rectangular     |
+|                  | in real time.                             | objects in the surrounding area.       |
+|                  | - Can operate on the aspect ratio         | - Many lines generated which are not   |
+|                  | of doors and take into account            | relevant to the door being detected.   |
+|                  | their geometric properties.               | - Multiple lines for a single door     |
+|                  | - Can take note of the floor and          | edge, need to be merged reliably       |
+|                  | use its horizon line to verify the        |                                        |
+|                  | the integrity of the line                 |                                        |
+|------------------+-------------------------------------------+----------------------------------------|
+| Ransac           | - Robustly eliminates false               | - Can only estimate one model for a    |
+|                  | positives                                 | particular data set                    |
+|                  | - High degree of accuracy even when       | - When multiple models (doors in this  |
+|                  | outliers are present in the data          | case) exist in the image it may fail   |
+|                  |                                           | to find even one, let alone both       |
+|------------------+-------------------------------------------+----------------------------------------|
+| Contour Boxing   | - Used after edge detection               | - Many false positives due to no depth |
+|                  | - Draws boxes around the largest contours | sensing, cannot tell the actual        |
+|                  | in the image                              | physical size of any detected doors,   |
+|                  | - Checks to see if the ratio of the boxes | only the ratio of their height/width   |
+|                  | is within the minimum and maximum door    | - This causes smaller and larger       |
+|                  | ratio as defined by ISO standards         | objects to be erroneously detected as  |
+|                  |                                           | doors                                  |
+|------------------+-------------------------------------------+----------------------------------------|
+| Contour + Convex | - Improvement on Contour Boxing           |                                        |
+| Hull             | - Eliminates shapes whose bounding box is |                                        |
+|                  | similar to that of a door                 |                                        |
+|                  | - Allows for better detection of doors    |                                        |
+|                  | that are not parallel with the camera     |                                        |
+|                  | - Can use the number of sizes of the      |                                        |
+|                  | convex hull to eliminate odd shaped       |                                        |
+|                  | matches                                   |                                        |
+|                  | - Can check if opposite sides of the door |                                        |
+|                  | are parallel and equal in length          |                                        |
