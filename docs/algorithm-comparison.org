@@ -69,4 +69,5 @@
 |                  | precise geometry, eliminating many of     | - Requires the correct level of lighting  |                                              |
 |                  | different sized but same shaped false     | to get an accurate representation         |                                              |
 |                  | positives                                 |                                           |                                              |
+|------------------+-------------------------------------------+-------------------------------------------+----------------------------------------------|
 
