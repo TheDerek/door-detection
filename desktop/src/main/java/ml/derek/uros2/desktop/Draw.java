@@ -27,6 +27,19 @@ public class Draw
         return drawing;
     }
 
+    public static Mat corners(Mat corners, Mat baseImage)
+    {
+        Mat drawing = baseImage.clone();
+        for (int j = 0; j < corners.rows(); j++)
+            for (int i = 0; i < corners.cols(); i++)
+            {
+                if(corners.get(j, i)[0] > 60)
+                    Imgproc.circle(drawing, new Point(i, j), 5, new Scalar(0), 1, 8, 0);
+            }
+
+        return drawing;
+    }
+
     public static Mat lines(Mat lines, Mat baseImage)
     {
         // Copy the baseImage so we don't override it

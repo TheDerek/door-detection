@@ -143,6 +143,28 @@ public class Detection
         return largestRect;
     }
 
+    public static Mat getCorners(Mat src)
+    {
+        int lowThreshold= 40;
+        int max_lowThreshold = 100;
+        int ratio = 5;
+        Mat out = Mat.zeros(src.size(), CvType.CV_32FC1);
+        Mat srcGrey = new Mat();
+
+        Imgproc.cvtColor(src, srcGrey, Imgproc.COLOR_BGR2GRAY);
+        Imgproc.blur(srcGrey, srcGrey, new Size(3.9f, 3.9f));
+        Imgproc.Canny(srcGrey, srcGrey, lowThreshold, lowThreshold * ratio);
+
+
+        Imgproc.cornerHarris(srcGrey, out, 2, 3, 0.04);
+        //Imgproc.cornerEigenValsAndVecs(srcGrey, out, 2, 3, 0);
+
+        Core.normalize(out, out, 0, 255, Core.NORM_MINMAX, CvType.CV_32FC1, new Mat());
+        Core.convertScaleAbs(out, out);
+
+        return out;
+    }
+
     public static Rect detectDoor(Mat door)
     {
         //Mat lines = Detection.doorLines(door);
