@@ -3,6 +3,7 @@ package ml.derek.uros2.desktop;
 import ml.derek.uros2.desktop.util.Convert;
 import ml.derek.uros2.desktop.util.Display;
 import ml.derek.uros2.desktop.util.Line;
+import ml.derek.uros2.desktop.util.Measure;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 
@@ -51,6 +52,49 @@ public class Detection
         Imgproc.HoughLinesP(door, lines, 1, Math.PI / 180, 50, 3, 50);
 
         return lines;
+    }
+
+    public static Mat doorLines2(Mat mat)
+    {
+        Mat drawing = new Mat();
+
+        // Smoothing
+        Imgproc.GaussianBlur(mat, drawing, Measure.kSize, Measure.sigmaX,
+                Measure.sigmaY);
+
+        drawing = addBorder(drawing, 2);
+
+        // Detecting edge
+        Imgproc.Canny(drawing, drawing, Measure.cannyLowThres,
+                Measure.cannyUpThres, Measure.apertureSize, false);
+
+        // Detect lines
+        Mat mLine = new Mat();
+        Imgproc.HoughLinesP(drawing, mLine, Measure.houghRho, Measure.houghTheta,
+                Measure.houghThreshold, Measure.houghMinLineSize,
+                Measure.houghLineGap);
+
+        return mat;
+
+    }
+
+    private static Mat addBorder(Mat img, int borderSize) {
+        // add an inner white border in order to create a corner
+        // when the real one is occluded
+
+        Size roiSize = new Size(img.width() - borderSize * 2, img.height()
+                - borderSize * 2);
+        Rect roi = new Rect(new Point(borderSize, borderSize), roiSize);
+
+        Mat mCrop = img.submat(roi);
+
+        Mat mBorder = img.clone();
+
+        Core.copyMakeBorder(mCrop, mBorder, borderSize, borderSize,
+                borderSize, borderSize, Core.BORDER_ISOLATED, new Scalar(255, 255, 255));
+
+
+        return mBorder;
     }
 
     public static MatOfInt convexHull(MatOfPoint contour)
