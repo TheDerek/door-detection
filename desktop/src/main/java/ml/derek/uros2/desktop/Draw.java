@@ -27,6 +27,16 @@ public class Draw
         return drawing;
     }
 
+    public static Mat corners(Point[] points, Mat baseImage)
+    {
+        Mat drawing = baseImage.clone();
+
+        for(Point point : points)
+            Imgproc.circle(drawing, point, 5, new Scalar(0, 255, 0));
+
+        return drawing;
+    }
+
     public static Mat corners(Mat corners, Mat baseImage)
     {
         Mat drawing = baseImage.clone();

@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">android</string>
+    <string name="app_name">UROS DOOR</string>
+    <string name="menu">Menu</string>
+    <string name="more_canny">Canny +</string>
+    <string name="less_canny">Canny -</string>
+    <string name="incr_divarious_canny">Canny W</string>
+    <string name="incr_fr">FR +</string>
+    <string name="decr_fr">FR -</string>
 </resources>

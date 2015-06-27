@@ -4,6 +4,7 @@ package ml.derek.uros2.desktop;
 import ml.derek.uros2.desktop.util.Convert;
 import ml.derek.uros2.desktop.util.Display;
 import ml.derek.uros2.desktop.util.Line;
+import ml.derek.uros2.desktop.util.Operations;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 
@@ -21,7 +22,7 @@ public class Test
     {
         System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
 
-        File file = new File("simple/close1.jpg");
+        File file = new File("simple/door4.jpg");
         BufferedImage image = ImageIO.read(file);
         Mat door = Convert.mat(image);
 
@@ -31,12 +32,16 @@ public class Test
         List<MatOfPoint> contours = Detection.doorContours(doorLines);
         List<Rect> rects = Detection.getBounds(contours);
         List<MatOfPoint> hulls = Detection.convexHulls(contours);
+
         Mat corners = Detection.getCorners(door);
+        Point[] corners2 = Detection.getCorners2(door).toArray();
+        //List<Point> pointList = Convert.pointList(corners);
+        //Operations.mergeAllPoints(pointList);
 
         Mat contourMat = Draw.contours(contours, new Mat(door.size(), door.type()));
         Mat rectangle = Draw.rect(Detection.largestRect(rects), door);
         Mat hullMat = Draw.convexHulls(hulls, door);
-        Mat cornerMat = Draw.corners(Convert.pointList(corners), door);
+        Mat cornerMat = Draw.corners(corners2, door);
 
         BufferedImage doorLinesImage = Convert.bufferedImage(hullMat);
         BufferedImage contourImage = Convert.bufferedImage(contourMat);

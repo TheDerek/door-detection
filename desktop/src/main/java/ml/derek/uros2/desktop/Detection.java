@@ -148,7 +148,6 @@ public class Detection
     public static Mat getCorners(Mat src)
     {
         int lowThreshold= 40;
-        int max_lowThreshold = 100;
         int ratio = 5;
         Mat out = Mat.zeros(src.size(), CvType.CV_32FC1);
         Mat srcGrey = new Mat();
@@ -163,6 +162,23 @@ public class Detection
 
         Core.normalize(out, out, 0, 255, Core.NORM_MINMAX, CvType.CV_32FC1, new Mat());
         Core.convertScaleAbs(out, out);
+
+        return out;
+    }
+
+    public static MatOfPoint getCorners2(Mat src)
+    {
+
+        int lowThreshold= 40;
+        int ratio = 5;
+        MatOfPoint out = new MatOfPoint();
+        Mat srcGrey = new Mat();
+
+        Imgproc.cvtColor(src, srcGrey, Imgproc.COLOR_BGR2GRAY);
+        Imgproc.blur(srcGrey, srcGrey, new Size(3.9f, 3.9f));
+        Imgproc.Canny(srcGrey, srcGrey, lowThreshold, lowThreshold * ratio);
+
+        Imgproc.goodFeaturesToTrack(srcGrey, out, 100, 0.01, 30);
 
         return out;
     }

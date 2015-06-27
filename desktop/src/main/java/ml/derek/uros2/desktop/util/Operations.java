@@ -11,12 +11,20 @@ import java.util.List;
 
 public class Operations
 {
-    public static int POINT_MERGE_MAX_DISTANCE = 10;
+    public static int POINT_MERGE_MAX_DISTANCE = 100;
 
 
     public static List<Point> mergePoints(Mat unmerged)
     {
         return mergePoints(Convert.pointList(unmerged));
+    }
+
+    public static void mergeAllPoints(List<Point> unmerged)
+    {
+        for(int x = 0; x < 1000; x++)
+        {
+            unmerged = mergePoints(unmerged);
+        }
     }
 
     public static List<Point> mergePoints(List<Point> unmerged)
