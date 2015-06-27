@@ -22,7 +22,7 @@ public class Test
     {
         System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
 
-        File file = new File("simple/door4.jpg");
+        File file = new File("simple/close1.jpg");
         BufferedImage image = ImageIO.read(file);
         Mat door = Convert.mat(image);
 
