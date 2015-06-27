@@ -33,9 +33,20 @@ public class Draw
         for (int j = 0; j < corners.rows(); j++)
             for (int i = 0; i < corners.cols(); i++)
             {
-                if(corners.get(j, i)[0] > 60)
+                if(corners.get(j, i)[0] > Detection.CORNER_THRESHOLD)
                     Imgproc.circle(drawing, new Point(i, j), 5, new Scalar(0), 1, 8, 0);
             }
+
+        return drawing;
+    }
+
+    public static Mat corners(List<Point> points, Mat baseImage)
+    {
+        Mat drawing = baseImage.clone();
+        for(Point p1 : points)
+        {
+            Imgproc.circle(drawing, p1, 5, new Scalar(0), 1, 8, 0);
+        }
 
         return drawing;
     }

@@ -14,6 +14,8 @@ import java.util.*;
 
 public class Detection
 {
+    public static int CORNER_THRESHOLD = 60;
+
     /**
      * Returns the lines from the image
      * @param mat the image to get the lines from

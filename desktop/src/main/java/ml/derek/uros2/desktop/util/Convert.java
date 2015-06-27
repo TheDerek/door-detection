@@ -1,6 +1,7 @@
 package ml.derek.uros2.desktop.util;
 
 import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
+import ml.derek.uros2.desktop.Detection;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -104,5 +105,21 @@ public class Convert
     public static BufferedImage bufferedImage(Mat mat)
     {
         return bufferedImage(mat, BufferedImage.TYPE_3BYTE_BGR);
+    }
+
+    public static List<Point> pointList(Mat points)
+    {
+        List<Point> list = new ArrayList<>();
+
+        for (int j = 0; j < points.rows(); j++)
+            for (int i = 0; i < points.cols(); i++)
+            {
+                if(points.get(j, i)[0] > Detection.CORNER_THRESHOLD)
+                {
+                    list.add(new Point(j, i));
+                }
+            }
+
+        return list;
     }
 }
