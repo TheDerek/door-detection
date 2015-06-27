@@ -116,7 +116,7 @@ public class Convert
             {
                 if(points.get(j, i)[0] > Detection.CORNER_THRESHOLD)
                 {
-                    list.add(new Point(j, i));
+                    list.add(new Point(i, j));
                 }
             }
 

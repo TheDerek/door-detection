@@ -36,7 +36,7 @@ public class Test
         Mat contourMat = Draw.contours(contours, new Mat(door.size(), door.type()));
         Mat rectangle = Draw.rect(Detection.largestRect(rects), door);
         Mat hullMat = Draw.convexHulls(hulls, door);
-        Mat cornerMat = Draw.corners(corners, door);
+        Mat cornerMat = Draw.corners(Convert.pointList(corners), door);
 
         BufferedImage doorLinesImage = Convert.bufferedImage(hullMat);
         BufferedImage contourImage = Convert.bufferedImage(contourMat);
