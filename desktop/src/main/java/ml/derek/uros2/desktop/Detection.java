@@ -5,6 +5,7 @@ import ml.derek.uros2.desktop.util.Display;
 import ml.derek.uros2.desktop.util.Line;
 import ml.derek.uros2.desktop.util.Measure;
 import org.opencv.core.*;
+import org.opencv.features2d.FeatureDetector;
 import org.opencv.imgproc.Imgproc;
 
 import javax.imageio.ImageIO;
@@ -22,7 +23,7 @@ public class Detection
      * @param mat the image to get the lines from
      * @return A matrix of the lines present in the image
      */
-    public static Mat doorLines(Mat mat)
+    public static List<Line> doorLines(Mat mat)
     {
         int edgeThresh = 1;
         int lowThreshold= 40;
@@ -49,32 +50,56 @@ public class Detection
 
         // Extract the lines from the image
         Mat lines = new Mat();
-        Imgproc.HoughLinesP(door, lines, 1, Math.PI / 180, 50, 3, 50);
+        Imgproc.HoughLinesP(door, lines, 0.4, Math.PI / 180, 100, 100, 200);
 
-        return lines;
+        // Needed for visualization only
+        /*for (int i = 0; i < lines.height(); i++)
+        {
+            cv::Vec4i v = lines.row(i);
+            lines[i][0] = 0;
+            lines[i][1] = ((float)v[1] - v[3]) / (v[0] - v[2]) * -v[0] + v[1];
+            lines[i][2] = src.cols;
+            lines[i][3] = ((float)v[1] - v[3]) / (v[0] - v[2]) * (src.cols - v[2]) + v[3];
+        }*/
+        List<Line> list = Convert.list(lines);
+        for(Line line : list)
+        {
+
+        }
+
+        return list;
     }
 
     public static Mat doorLines2(Mat mat)
     {
-        Mat drawing = new Mat();
+        int edgeThresh = 1;
+        int lowThreshold= 40;
+        int max_lowThreshold = 100;
+        int ratio = 5;
+        int kernel_size = 3;
 
-        // Smoothing
-        Imgproc.GaussianBlur(mat, drawing, Measure.kSize, Measure.sigmaX,
-                Measure.sigmaY);
+        Mat door = mat.clone();
 
-        //drawing = addBorder(drawing, 2);
+        if(door == null)
+        {
+            System.out.println("Couldn't load mat");
+            return null;
+        }
 
-        // Detecting edge
-        Imgproc.Canny(drawing, drawing, Measure.cannyLowThres,
-                Measure.cannyUpThres, Measure.apertureSize, false);
+        // Convert image to greyscale
+        Imgproc.cvtColor(door, door, Imgproc.COLOR_BGR2GRAY);
 
-        // Detect lines
-        Mat mLine = new Mat();
-        Imgproc.HoughLinesP(drawing, mLine, Measure.houghRho, Measure.houghTheta,
-                Measure.houghThreshold, Measure.houghMinLineSize,
-                Measure.houghLineGap);
+        //Remove noise from the image
+        Imgproc.blur(door, door, new Size(3, 3));
 
-        return mLine;
+        // Detect the edges of the image
+        Imgproc.Canny(door, door, lowThreshold, lowThreshold*ratio);
+
+        // Extract the lines from the image
+        Mat lines = new Mat();
+        Imgproc.HoughLinesP(door, lines, 1, Math.PI / 180, 70, 30, 10);
+
+        return lines;
 
     }
 
@@ -220,11 +245,45 @@ public class Detection
 
         Imgproc.cvtColor(src, srcGrey, Imgproc.COLOR_BGR2GRAY);
         Imgproc.blur(srcGrey, srcGrey, new Size(3.9f, 3.9f));
-        Imgproc.Canny(srcGrey, srcGrey, lowThreshold, lowThreshold * ratio);
+        Imgproc.Canny(srcGrey, srcGrey, 90, 100);
 
         Imgproc.goodFeaturesToTrack(srcGrey, out, 100, 0.01, 30);
 
         return out;
+    }
+
+    public static List<Line> getDoor(List<Line> lines)
+    {
+        double range = 4;
+        List<Line> inter = new ArrayList<>();
+
+        Iterator<Line> iterator1 = lines.iterator();
+        while(iterator1.hasNext())
+        {
+            Line line1 = iterator1.next();
+
+            Iterator<Line> iterator2 = lines.iterator();
+            while(iterator2.hasNext())
+            {
+                Line line2 = iterator2.next();
+                if(!line1.equals(line2))
+                {
+                    if(line1.intersects(line2))
+                    {
+                        double difference = Math.abs(line1.angle() - line2.angle());
+                        if(difference > 90 - range && difference < 90 + range)
+                        {
+                            inter.add(line1);
+                            inter.add(line2);
+                            //iterator1.remove();
+                           // iterator2.remove();
+                        }
+                    }
+                }
+            }
+        }
+
+        return inter;
     }
 
     public static Rect detectDoor(Mat door)

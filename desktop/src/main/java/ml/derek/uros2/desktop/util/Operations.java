@@ -6,6 +6,8 @@ import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,6 +60,75 @@ public class Operations
 
         return merged;
     }
+
+    public static List<Line> joinPoints(Point[] points)
+    {
+        double range = 4;
+        List<Line> lines = new ArrayList<>();
+        for(Point p1 : points)
+            for(Point p2 : points)
+            {
+                if(!p1.equals(p2))
+                {
+                    Line l = new Line(p1, p2);
+                    boolean cancel = false;
+
+                    if(l.angle() > 90 - range && l.angle() < 90 + range)
+                        lines.add(l);
+                    else if(l.angle() > 180 - range && l.angle() < 180 + range)
+                        lines.add(l);
+                }
+            }
+
+
+
+        return lines;
+    }
+
+    public static List<Line> compareLines(List<Line> lines)
+    {
+        double range = 4;
+
+        List<Line> lines2 = new ArrayList<>();
+        for(Line line1 : lines)
+        {
+            for(Line line2 : lines)
+            {
+                if(!line1.equals(line2))
+                {
+                    double difference = Math.abs(line1.angle() - line2.angle());
+                    if(difference > 90 - range && difference < 90 + range)
+                    {
+                        if(line1.intersects(line2))
+                        {
+                            lines2.add(line1);
+                            lines2.add(line2);
+                        }
+                    }
+                }
+            }
+        }
+
+        return lines2;
+    }
+
+    public static void writeStringToFile(String string, String filename)
+    {
+        try
+        {
+            PrintWriter out = new PrintWriter(filename);
+            out.write(string);
+            out.close();
+        } catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
+
 
     public static Point merge(Point p1, Point p2)
     {

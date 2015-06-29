@@ -122,4 +122,13 @@ public class Convert
 
         return list;
     }
+
+    public static String string(Point[] points)
+    {
+        String string = "";
+        for(Point p : points)
+            string += p.x + " " + p.y + "\n";
+
+        return string;
+    }
 }

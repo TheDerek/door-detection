@@ -2,6 +2,8 @@ package ml.derek.uros2.desktop.util;
 
 import org.opencv.core.Point;
 
+import java.awt.geom.Line2D;
+
 public class Line
 {
     public Point p1;
@@ -43,6 +45,11 @@ public class Line
             new Point((this.p1.x + line2.p1.x) / 2, (this.p1.y + line2.p1.y) / 2),
             new Point((this.p2.x + line2.p2.x) / 2, (this.p2.y + line2.p2.y) / 2)
         );
+    }
+
+    public boolean intersects(Line line2)
+    {
+        return Line2D.linesIntersect(this.p1.x, this.p1.y, this.p2.x, this.p2.y, line2.p1.x, line2.p1.y, line2.p2.x, line2.p2.y);
     }
 
     public Point intersect(Line that)
