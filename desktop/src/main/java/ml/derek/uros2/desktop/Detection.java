@@ -62,7 +62,7 @@ public class Detection
         Imgproc.GaussianBlur(mat, drawing, Measure.kSize, Measure.sigmaX,
                 Measure.sigmaY);
 
-        drawing = addBorder(drawing, 2);
+        //drawing = addBorder(drawing, 2);
 
         // Detecting edge
         Imgproc.Canny(drawing, drawing, Measure.cannyLowThres,
@@ -74,7 +74,7 @@ public class Detection
                 Measure.houghThreshold, Measure.houghMinLineSize,
                 Measure.houghLineGap);
 
-        return mat;
+        return mLine;
 
     }
 

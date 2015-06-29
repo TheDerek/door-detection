@@ -22,16 +22,17 @@ public class Test
     {
         System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
 
-        File file = new File("simple/close1.jpg");
+        File file = new File("simple/close2.jpg");
         BufferedImage image = ImageIO.read(file);
         Mat door = Convert.mat(image);
 
-        Mat lines = Detection.doorLines(door);
+        Mat lines = Detection.doorLines2(door);
         Mat doorLines = Draw.lines(lines, new Mat(door.rows(), door.width(), door.type()));
 
         List<MatOfPoint> contours = Detection.doorContours(doorLines);
         List<Rect> rects = Detection.getBounds(contours);
         List<MatOfPoint> hulls = Detection.convexHulls(contours);
+
 
         Mat corners = Detection.getCorners(door);
         Point[] corners2 = Detection.getCorners2(door).toArray();
@@ -48,6 +49,6 @@ public class Test
         BufferedImage rectImage = Convert.bufferedImage(rectangle);
         BufferedImage cornerImage = Convert.bufferedImage(cornerMat);
 
-        JFrame frame = Display.image(cornerImage, contourImage, rectImage, image);
+        JFrame frame = Display.image(cornerImage, doorLinesImage, image);
     }
 }
