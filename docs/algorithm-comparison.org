@@ -2,10 +2,10 @@
 |------------------+-------------------------------------------+-------------------------------------------+----------------------------------------------|
 | Approach         | Advantages                                | Disadvantages                             | Additional Information                       |
 |------------------+-------------------------------------------+-------------------------------------------+----------------------------------------------|
-| Machine Learning | - Thorough documentation and              | - Requires high set of sample images,     |                                              |
-|                  | examples                                  | labour intensive to gather.               |                                              |
-|                  |                                           | - High processing time, difficult to      |                                              |
-|                  |                                           | do real time.                             |                                              |
+| Machine Learning | - Thorough documentation and              | - Requires high set of sample images,     | - OpenCV includes many functions to aid this |
+|                  | examples                                  | labour intensive to gather.               | effect but documentation is confusing and    |
+|                  |                                           | - High processing time, difficult to      | makes many assumptions about the users       |
+|                  |                                           | do real time.                             | prior knowledge                              |
 |                  |                                           | - Doors vary widely in appearance         |                                              |
 |                  |                                           | which makes detecting similar features    |                                              |
 |                  |                                           | difficult if not impossible               |                                              |
@@ -16,11 +16,11 @@
 |                  | of doors and take into account            | relevant to the door being detected.      |                                              |
 |                  | their geometric properties.               | - Multiple lines for a single door        |                                              |
 |                  | - Can take note of the floor and          | edge, need to be merged reliably          |                                              |
-|                  | use its horizon line to verify the        |                                           |                                              |
-|                  | the integrity of the line                 |                                           |                                              |
+|                  | use its horizon line to verify the        | - Does not work on non-rectangle shaped   |                                              |
+|                  | the integrity of the line                 | doors                                     |                                              |
 |------------------+-------------------------------------------+-------------------------------------------+----------------------------------------------|
-| Ransac           | - Robustly eliminates false               | - Can only estimate one model for a       |                                              |
-|                  | positives                                 | particular data set                       |                                              |
+| Ransac           | - Robustly eliminates false               | - Can only estimate one model for a       | - Can work on points, making it possible     |
+|                  | positives                                 | particular data set                       | to combine this with corner detection        |
 |                  | - High degree of accuracy even when       | - When multiple models (doors in this     |                                              |
 |                  | outliers are present in the data          | case) exist in the image it may fail      |                                              |
 |                  |                                           | to find even one, let alone both          |                                              |
@@ -35,8 +35,8 @@
 |------------------+-------------------------------------------+-------------------------------------------+----------------------------------------------|
 | Contour + Convex | - Improvement on Contour Boxing           | - More computationally expensive than     |                                              |
 | Hull             | - Eliminates shapes whose bounding box is | using rectangles                          |                                              |
-|                  | similar to that of a door                 |                                           |                                              |
-|                  | - Allows for better detection of doors    |                                           |                                              |
+|                  | similar to that of a door                 | - Takes into account outliers which       |                                              |
+|                  | - Allows for better detection of doors    | causes the convex hull to be distorted    |                                              |
 |                  | that are not parallel with the camera     |                                           |                                              |
 |                  | - Can use the number of sizes of the      |                                           |                                              |
 |                  | convex hull to eliminate odd shaped       |                                           |                                              |
@@ -59,10 +59,10 @@
 |                  | splitting and merging of lines that Hough |                                           |                                              |
 |                  | Lines does                                |                                           |                                              |
 |------------------+-------------------------------------------+-------------------------------------------+----------------------------------------------|
-| Depth Sensor     | - Can distinguish between flat surfaces   | - Specialist hardware required that is    |                                              |
-|                  | and non-flat surfaces, eliminating many   | often expensive and hard to acquire       |                                              |
-|                  | of the false positives                    | - Hardware is bulky and may inconvenience |                                              |
-|                  | - Can detect the skirting board which     | the user somewhat                         |                                              |
+| Depth Sensor     | - Can distinguish between flat surfaces   | - Specialist hardware required that is    | - Project Tango would be ideal in this case  |
+|                  | and non-flat surfaces, eliminating many   | often expensive and hard to acquire       | as is it portable and contains a variety     |
+|                  | of the false positives                    | - Hardware is bulky and may inconvenience | of sensors which would prove helpful in      |
+|                  | - Can detect the skirting board which     | the user somewhat                         | the detection of doors                       |
 |                  | is often accompanied by indoor doors      | - Limited range of the sensor prevents    |                                              |
 |                  | - Can measure the physical width and      | detection of far away and very close by   |                                              |
 |                  | height of doors and thus determine their  | doors                                     |                                              |
