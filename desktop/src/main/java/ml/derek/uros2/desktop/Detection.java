@@ -23,7 +23,7 @@ public class Detection
      * @param mat the image to get the lines from
      * @return A matrix of the lines present in the image
      */
-    public static List<Line> doorLines(Mat mat)
+    public static List<Line> imageLines(Mat mat)
     {
         int edgeThresh = 1;
         int lowThreshold= 40;
@@ -52,22 +52,24 @@ public class Detection
         Mat lines = new Mat();
         Imgproc.HoughLinesP(door, lines, 0.4, Math.PI / 180, 100, 100, 200);
 
-        // Needed for visualization only
-        /*for (int i = 0; i < lines.height(); i++)
-        {
-            cv::Vec4i v = lines.row(i);
-            lines[i][0] = 0;
-            lines[i][1] = ((float)v[1] - v[3]) / (v[0] - v[2]) * -v[0] + v[1];
-            lines[i][2] = src.cols;
-            lines[i][3] = ((float)v[1] - v[3]) / (v[0] - v[2]) * (src.cols - v[2]) + v[3];
-        }*/
         List<Line> list = Convert.list(lines);
-        for(Line line : list)
-        {
-
-        }
 
         return list;
+    }
+
+    public static List<Point> lineIntersections(List<Line> lines)
+    {
+        List<Point> points = new ArrayList<>();
+        for(Line l1 : lines)
+            for(Line l2 : lines)
+            {
+                if(!l1.equals(l2))
+                {
+                    points.add(l1.intersects(l2));
+                }
+            }
+
+        return points;
     }
 
     public static Mat doorLines2(Mat mat)
@@ -252,44 +254,12 @@ public class Detection
         return out;
     }
 
-    public static List<Line> getDoor(List<Line> lines)
-    {
-        double range = 4;
-        List<Line> inter = new ArrayList<>();
 
-        Iterator<Line> iterator1 = lines.iterator();
-        while(iterator1.hasNext())
-        {
-            Line line1 = iterator1.next();
-
-            Iterator<Line> iterator2 = lines.iterator();
-            while(iterator2.hasNext())
-            {
-                Line line2 = iterator2.next();
-                if(!line1.equals(line2))
-                {
-                    if(line1.intersects(line2))
-                    {
-                        double difference = Math.abs(line1.angle() - line2.angle());
-                        if(difference > 90 - range && difference < 90 + range)
-                        {
-                            inter.add(line1);
-                            inter.add(line2);
-                            //iterator1.remove();
-                           // iterator2.remove();
-                        }
-                    }
-                }
-            }
-        }
-
-        return inter;
-    }
 
     public static Rect detectDoor(Mat door)
     {
-        //Mat lines = Detection.doorLines(door);
-        //Mat doorLines = Draw.lines(lines, new Mat(door.rows(), door.width(), door.type()));
+        //Mat lines = Detection.imageLines(door);
+        //Mat imageLines = Draw.lines(lines, new Mat(door.rows(), door.width(), door.type()));
 
         List<MatOfPoint> contours = Detection.doorContours(door);
         List<Rect> rects = Detection.getBounds(contours);

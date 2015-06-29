@@ -47,13 +47,28 @@ public class Line
         );
     }
 
-    public boolean intersects(Line line2)
+    public Point intersects(Line line2)
     {
-        return Line2D.linesIntersect(this.p1.x, this.p1.y, this.p2.x, this.p2.y, line2.p1.x, line2.p1.y, line2.p2.x, line2.p2.y);
+        double x1 = p1.x;       double y1 = p1.y;
+        double x2 = p2.x;       double y2 = p2.y;
+        double x3 = line2.p1.x; double y3 = line2.p1.y;
+        double x4 = line2.p2.x; double y4 = line2.p2.y;
+
+        Point pt = new Point();
+        double d = ((x1-x2) * (y3-y4)) - ((y1-y2) * (x3-x4));
+        pt.x = ((x1*y2 - y1*x2) * (x3-x4) - (x1-x2) * (x3*y4 - y3*x4)) / d;
+        pt.y = ((x1*y2 - y1*x2) * (y3-y4) - (y1-y2) * (x3*y4 - y3*x4)) / d;
+        return pt;
+        //return Line2D.linesIntersect(this.p1.x, this.p1.y, this.p2.x, this.p2.y, line2.p1.x, line2.p1.y, line2.p2.x, line2.p2.y);
     }
 
-    public Point intersect(Line that)
+    public double graident()
     {
-        return null;
+        return (p1.y - p2.y) / (p1.x - p2.x);
+    }
+
+    public double m()
+    {
+        return graident();
     }
 }

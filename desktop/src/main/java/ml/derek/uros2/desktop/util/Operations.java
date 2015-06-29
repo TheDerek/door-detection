@@ -85,32 +85,7 @@ public class Operations
         return lines;
     }
 
-    public static List<Line> compareLines(List<Line> lines)
-    {
-        double range = 4;
 
-        List<Line> lines2 = new ArrayList<>();
-        for(Line line1 : lines)
-        {
-            for(Line line2 : lines)
-            {
-                if(!line1.equals(line2))
-                {
-                    double difference = Math.abs(line1.angle() - line2.angle());
-                    if(difference > 90 - range && difference < 90 + range)
-                    {
-                        if(line1.intersects(line2))
-                        {
-                            lines2.add(line1);
-                            lines2.add(line2);
-                        }
-                    }
-                }
-            }
-        }
-
-        return lines2;
-    }
 
     public static void writeStringToFile(String string, String filename)
     {
