@@ -50,27 +50,102 @@ public class Detection
 
         // Extract the lines from the image
         Mat lines = new Mat();
-        Imgproc.HoughLinesP(door, lines, 0.4, Math.PI / 180, 100, 100, 200);
+        Imgproc.HoughLinesP(door, lines, 1, Math.PI / 180, 100, 100, 200);
 
         List<Line> list = Convert.list(lines);
+        for(Line line : list)
+        {
+
+        }
 
         return list;
     }
 
-    public static List<Point> lineIntersections(List<Line> lines)
+    public static List<Point> lineIntersections(List<Line> lines, Size bounds)
     {
+        Rect boundRect = new Rect(0, 0, (int) bounds.width, (int) bounds.height);
         List<Point> points = new ArrayList<>();
         for(Line l1 : lines)
             for(Line l2 : lines)
             {
                 if(!l1.equals(l2))
                 {
-                    points.add(l1.intersects(l2));
+                    Point intersection = l1.intersects(l2);
+                    if(intersection.inside(boundRect))
+                    {
+                        points.add(intersection);
+
+                        if (l1.getIntersection(l2) == null)
+                            l1.addIntersection(l2);
+
+                        if (l2.getIntersection(l1) == null)
+                            l2.addIntersection(l1);
+                    }
                 }
             }
 
+        System.out.println("Number of intersections: " + points.size());
         return points;
     }
+
+    public static List<Rect> getRects(List<Line> lines)
+    {
+        for(Line l1 : lines)
+            for(Line l2 : lines)
+                for(Line l3 : lines)
+                    for(Line l4 : lines)
+                    {
+                        Line[] doorLines = new Line[] {l1, l2, l3, l4};
+                        Set set = new HashSet();
+                        Collections.addAll(set, doorLines);
+
+                        if(set.size() < doorLines.length)
+                            continue; // One or more of these lines are duplicates
+
+
+                    }
+
+        return null;
+    }
+
+    public static boolean isDoor(Line l1, Line l2, Line l3, Line l4)
+    {
+        Line[] lines = new Line[] {l1, l2, l3, l4};
+
+    }
+
+    public static List<List<Line>> getPossiblePolygons(Line original, Line current,
+                                                       List<Line> lines, List<List<Line>> shapes, int sides)
+    {
+        // Oh boy, we are staring from the beginning
+        if(original.equals(current))
+        {
+            // Assuming that lines has already been created
+            lines.add(current);
+            //if(current.getIntersections().)
+        }
+
+        return null;
+
+    }
+
+    public static boolean hasLoop(Line startNode)
+    {
+        Line slowNode, fastNode1, fastNode2;
+        slowNode = fastNode1 = fastNode2 = startNode;
+
+        while   ((slowNode != null) &&
+                ((fastNode1 = fastNode2.next()) != null) &&
+                ((fastNode2 = fastNode1.next()) != null))
+        {
+            if (slowNode == fastNode1 || slowNode == fastNode2)
+                return true;
+
+            slowNode = slowNode.next();
+        }
+        return false;
+    }
+
 
     public static Mat doorLines2(Mat mat)
     {

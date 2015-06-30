@@ -5,7 +5,6 @@ import ml.derek.uros2.desktop.util.Convert;
 import ml.derek.uros2.desktop.util.Display;
 import ml.derek.uros2.desktop.util.Line;
 import org.opencv.core.*;
-import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 import javax.imageio.ImageIO;
@@ -24,11 +23,13 @@ public class Test
         File file = new File("simple/close1.jpg");
         BufferedImage image = ImageIO.read(file);
         Mat door = Convert.mat(image);
+
         List<Line> lineList =  Detection.imageLines(door);
-        List<Point> intersections = Detection.lineIntersections(lineList);
+        List<Point> intersections = Detection.lineIntersections(lineList, door.size());
+        List<Rect> rects = Detection.getRects(lineList);
 
         Mat doorLines = Draw.lines(lineList, door);
-        doorLines = Draw.corners(intersections, doorLines);
+        doorLines = Draw.points(intersections, doorLines);
 
         BufferedImage lineImage = Convert.bufferedImage(doorLines);
 

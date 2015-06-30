@@ -85,7 +85,10 @@ public class Operations
         return lines;
     }
 
-
+    public static List<Point> cluster(List<Point> points)
+    {
+        return null;
+    }
 
     public static void writeStringToFile(String string, String filename)
     {

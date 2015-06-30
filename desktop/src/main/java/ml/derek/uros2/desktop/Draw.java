@@ -27,7 +27,7 @@ public class Draw
         return drawing;
     }
 
-    public static Mat corners(Point[] points, Mat baseImage)
+    public static Mat points(Point[] points, Mat baseImage)
     {
         Mat drawing = baseImage.clone();
 
@@ -37,7 +37,7 @@ public class Draw
         return drawing;
     }
 
-    public static Mat corners(Mat corners, Mat baseImage)
+    public static Mat points(Mat corners, Mat baseImage)
     {
         Mat drawing = baseImage.clone();
         for (int j = 0; j < corners.rows(); j++)
@@ -50,12 +50,12 @@ public class Draw
         return drawing;
     }
 
-    public static Mat corners(List<Point> points, Mat baseImage)
+    public static Mat points(List<Point> points, Mat baseImage)
     {
         Mat drawing = baseImage.clone();
         for(Point p1 : points)
         {
-            Imgproc.circle(drawing, p1, 5, new Scalar(0), 1, 8, 0);
+            Imgproc.circle(drawing, p1, 5, new Scalar(0, 255, 0), 1, 8, 0);
         }
 
         return drawing;

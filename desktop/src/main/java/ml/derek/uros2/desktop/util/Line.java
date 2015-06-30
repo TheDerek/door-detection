@@ -3,16 +3,47 @@ package ml.derek.uros2.desktop.util;
 import org.opencv.core.Point;
 
 import java.awt.geom.Line2D;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Line
 {
-    public Point p1;
-    public Point p2;
+    public final Point p1;
+    public final Point p2;
+    private final Map<Line, Point> intersections;
 
     public Line(Point p1, Point p2)
     {
         this.p1 = p1;
         this.p2 = p2;
+        intersections = new HashMap<>();
+    }
+
+    public void addIntersection(Line line, Point intersection)
+    {
+        this.intersections.put(line, intersection);
+    }
+
+    public void addIntersection(Line line)
+    {
+        this.addIntersection(line, this.intersects(line));
+    }
+
+    public Point getIntersection(Line line)
+    {
+        return intersections.get(line);
+    }
+
+    public Line next()
+    {
+        return intersections.keySet().iterator().next();
+    }
+
+    public Map<Line, Point> getIntersections()
+    {
+        return intersections;
     }
 
     public double angle()
