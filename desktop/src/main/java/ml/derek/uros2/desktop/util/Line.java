@@ -2,17 +2,14 @@ package ml.derek.uros2.desktop.util;
 
 import org.opencv.core.Point;
 
-import java.awt.geom.Line2D;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Line
 {
     public final Point p1;
     public final Point p2;
     private final Map<Line, Point> intersections;
+    private Iterator<Line> iterator;
 
     public Line(Point p1, Point p2)
     {
@@ -36,9 +33,18 @@ public class Line
         return intersections.get(line);
     }
 
+    // Gets the next line intersection
     public Line next()
     {
-        return intersections.keySet().iterator().next();
+        if(iterator == null)
+            resetIterator();
+
+        return iterator.hasNext() ? iterator.next() : null;
+    }
+
+    public void resetIterator()
+    {
+        iterator = intersections.keySet().iterator();
     }
 
     public Map<Line, Point> getIntersections()

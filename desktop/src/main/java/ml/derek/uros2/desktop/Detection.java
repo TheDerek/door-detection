@@ -53,10 +53,6 @@ public class Detection
         Imgproc.HoughLinesP(door, lines, 1, Math.PI / 180, 100, 100, 200);
 
         List<Line> list = Convert.list(lines);
-        for(Line line : list)
-        {
-
-        }
 
         return list;
     }
@@ -90,43 +86,55 @@ public class Detection
 
     public static List<Rect> getRects(List<Line> lines)
     {
-        for(Line l1 : lines)
-            for(Line l2 : lines)
-                for(Line l3 : lines)
-                    for(Line l4 : lines)
-                    {
-                        Line[] doorLines = new Line[] {l1, l2, l3, l4};
-                        Set set = new HashSet();
-                        Collections.addAll(set, doorLines);
-
-                        if(set.size() < doorLines.length)
-                            continue; // One or more of these lines are duplicates
-
-
-                    }
-
+        double buffer = 10;
+        for(Line line1 : lines)
+        {
+            if(hasLoop(line1))
+            {
+                System.out.println("HEY YOU THERE LOOK HERE AT THIS POLYGON");
+                //isPoly(line1, line1, 4);
+            }
+        }
         return null;
     }
 
-    public static boolean isDoor(Line l1, Line l2, Line l3, Line l4)
+    public static boolean isPoly(Line root, Line line, int sides)
     {
-        Line[] lines = new Line[] {l1, l2, l3, l4};
+        root.resetIterator();
+        line.resetIterator();
+        double buffer = 10;
 
-    }
+        if(sides <= 0)
+            return line.getIntersections().get(root) != null;
 
-    public static List<List<Line>> getPossiblePolygons(Line original, Line current,
-                                                       List<Line> lines, List<List<Line>> shapes, int sides)
-    {
-        // Oh boy, we are staring from the beginning
-        if(original.equals(current))
+        Line next;
+        while((next = line.next()) != null)
         {
-            // Assuming that lines has already been created
-            lines.add(current);
-            //if(current.getIntersections().)
+            if(Math.abs(next.angle() - line.angle() - 90) <= buffer)
+                if(isPoly(root, next, sides - 1))
+                    return true;
         }
 
-        return null;
+        return false;
+    }
 
+    public static boolean isRectangle(Point p1, Point p2, Point p3, Point p4)
+    {
+        double buffer = 10;
+        double cx, cy;
+        double dd1, dd2, dd3, dd4;
+
+        cx = (p1.y + p2.y + p3.y + p4.y) / 4;
+        cy = (p1.y + p2.y + p3.y + p4.y) / 4;
+
+        dd1 = Math.pow(cx - p1.x, 2) + Math.pow(cy - p1.y, 2);
+        dd2 = Math.pow(cx - p2.x, 2) + Math.pow(cy - p2.y, 2);
+        dd3 = Math.pow(cx - p3.x, 2) + Math.pow(cy - p3.y, 2);
+        dd4 = Math.pow(cx - p4.x, 2) + Math.pow(cy - p4.y, 2);
+
+        return  Math.abs(dd1 - dd2) <= buffer &&
+                Math.abs(dd1 - dd3) <= buffer &&
+                Math.abs(dd1 - dd4) <= buffer;
     }
 
     public static boolean hasLoop(Line startNode)
@@ -144,6 +152,44 @@ public class Detection
             slowNode = slowNode.next();
         }
         return false;
+    }
+
+    public static List<MatOfPoint> polygons(Mat image)
+    {
+        Mat door = image.clone();
+
+        // Convert image to greyscale
+        Imgproc.cvtColor(door, door, Imgproc.COLOR_BGR2GRAY);
+
+        //Remove noise from the image
+        Imgproc.blur(door, door, new Size(3, 3));
+
+        // Detect the edges of the image
+        Imgproc.Canny(door, door, 100, 255);
+
+        // Find the contours in the image
+        List<MatOfPoint> contours = new ArrayList<>();
+        Mat hierarchy = new Mat();
+        Imgproc.findContours(door, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE, new Point(0, 0));
+
+        // Find the polys
+        List<MatOfPoint> polys = new ArrayList<>();
+        for(MatOfPoint contour : contours)
+        {
+            // Convert to MatOfPoint2f
+            MatOfPoint2f poly = new MatOfPoint2f();
+            MatOfPoint2f contourf = new MatOfPoint2f();
+            contour.convertTo(contourf, CvType.CV_32FC2);
+
+            // Get our Poly
+            Imgproc.approxPolyDP(contourf, poly, 3, true);
+
+            // Convert back
+            MatOfPoint poly2 = new MatOfPoint(contourf.toArray());
+            polys.add(poly2);
+        }
+
+        return polys;
     }
 
 

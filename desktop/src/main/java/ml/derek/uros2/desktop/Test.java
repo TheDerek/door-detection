@@ -20,19 +20,22 @@ public class Test
     {
         System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
 
-        File file = new File("simple/close1.jpg");
+        File file = new File("simple/close2.jpg");
         BufferedImage image = ImageIO.read(file);
         Mat door = Convert.mat(image);
 
         List<Line> lineList =  Detection.imageLines(door);
         List<Point> intersections = Detection.lineIntersections(lineList, door.size());
-        List<Rect> rects = Detection.getRects(lineList);
+        List<MatOfPoint> polys = Detection.polygons(door);
 
         Mat doorLines = Draw.lines(lineList, door);
         doorLines = Draw.points(intersections, doorLines);
 
-        BufferedImage lineImage = Convert.bufferedImage(doorLines);
+        Mat doorPolys = Draw.convexHulls(polys, door);
 
-        JFrame frame = Display.image(lineImage);
+        BufferedImage lineImage = Convert.bufferedImage(doorLines);
+        BufferedImage polyImage = Convert.bufferedImage(doorPolys);
+
+        JFrame frame = Display.image(lineImage, polyImage);
     }
 }

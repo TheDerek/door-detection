@@ -107,6 +107,8 @@ public class Draw
         return drawing;
     }
 
+
+
     public static Mat rect(Rect rect, Mat baseImage)
     {
         Mat drawing = baseImage.clone();
