@@ -10,6 +10,8 @@ public class Display
     {
         JFrame frame = new JFrame();
         frame.getContentPane().setLayout(new FlowLayout());
+        //JSlider slider = new JSlider(JSlider.HORIZONTAL, 10, 20);
+        //frame.getContentPane().add(slider);
 
         for(BufferedImage image : imgs)
         {

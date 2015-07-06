@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Test
@@ -26,12 +27,15 @@ public class Test
 
         List<Line> lineList =  Detection.imageLines(door);
         List<Point> intersections = Detection.lineIntersections(lineList, door.size());
-        List<MatOfPoint> polys = Detection.polygons(door);
+        List<Point> polys = Detection.getPolysFromIntersections(new MatOfPoint2f(intersections.toArray(new Point[intersections.size()])));
 
         Mat doorLines = Draw.lines(lineList, door);
         doorLines = Draw.points(intersections, doorLines);
 
-        Mat doorPolys = Draw.convexHulls(polys, door);
+        //List<MatOfPoint> polys = Detection.polygons(doorLines);
+        List<MatOfPoint> polyList = new ArrayList<>();
+        polyList.add(new MatOfPoint(polys.toArray(new Point[polys.size()])));
+        Mat doorPolys = Draw.contours(polyList, door);
 
         BufferedImage lineImage = Convert.bufferedImage(doorLines);
         BufferedImage polyImage = Convert.bufferedImage(doorPolys);

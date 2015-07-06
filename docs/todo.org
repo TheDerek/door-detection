@@ -1,0 +1,7 @@
+* Reports
+** Friday 3rd July 2015
+- Look at colour segmentation
+- Push for usable application on android with sound
+* Ideas
+- Colours
+  - K-MEANS

@@ -46,13 +46,24 @@ public class Detection
         Imgproc.blur(door, door, new Size(3, 3));
 
         // Detect the edges of the image
-        Imgproc.Canny(door, door, lowThreshold, lowThreshold*ratio);
+        Imgproc.Canny(door, door, lowThreshold, lowThreshold * ratio);
 
         // Extract the lines from the image
         Mat lines = new Mat();
         Imgproc.HoughLinesP(door, lines, 1, Math.PI / 180, 100, 100, 200);
 
         List<Line> list = Convert.list(lines);
+        List<Line> finalList = new ArrayList<>();
+        double range = 30;
+        for(Line line : list)
+        {
+            if(Math.abs(line.angle() - 90) < range)
+                finalList.add(line);
+            else if(Math.abs(line.angle()) < range)
+                finalList.add(line);
+            else if(Math.abs(line.angle() - 180) < range)
+                finalList.add(line);
+        }
 
         return list;
     }
@@ -84,74 +95,14 @@ public class Detection
         return points;
     }
 
-    public static List<Rect> getRects(List<Line> lines)
+
+    public static List<Point> getPolysFromIntersections(MatOfPoint2f intersections)
     {
-        double buffer = 10;
-        for(Line line1 : lines)
-        {
-            if(hasLoop(line1))
-            {
-                System.out.println("HEY YOU THERE LOOK HERE AT THIS POLYGON");
-                //isPoly(line1, line1, 4);
-            }
-        }
-        return null;
-    }
+        MatOfPoint2f polys = new MatOfPoint2f();
+        double epsilon = Imgproc.arcLength(intersections, true) * 0.0002;
+        Imgproc.approxPolyDP(intersections, polys, 3, true);
 
-    public static boolean isPoly(Line root, Line line, int sides)
-    {
-        root.resetIterator();
-        line.resetIterator();
-        double buffer = 10;
-
-        if(sides <= 0)
-            return line.getIntersections().get(root) != null;
-
-        Line next;
-        while((next = line.next()) != null)
-        {
-            if(Math.abs(next.angle() - line.angle() - 90) <= buffer)
-                if(isPoly(root, next, sides - 1))
-                    return true;
-        }
-
-        return false;
-    }
-
-    public static boolean isRectangle(Point p1, Point p2, Point p3, Point p4)
-    {
-        double buffer = 10;
-        double cx, cy;
-        double dd1, dd2, dd3, dd4;
-
-        cx = (p1.y + p2.y + p3.y + p4.y) / 4;
-        cy = (p1.y + p2.y + p3.y + p4.y) / 4;
-
-        dd1 = Math.pow(cx - p1.x, 2) + Math.pow(cy - p1.y, 2);
-        dd2 = Math.pow(cx - p2.x, 2) + Math.pow(cy - p2.y, 2);
-        dd3 = Math.pow(cx - p3.x, 2) + Math.pow(cy - p3.y, 2);
-        dd4 = Math.pow(cx - p4.x, 2) + Math.pow(cy - p4.y, 2);
-
-        return  Math.abs(dd1 - dd2) <= buffer &&
-                Math.abs(dd1 - dd3) <= buffer &&
-                Math.abs(dd1 - dd4) <= buffer;
-    }
-
-    public static boolean hasLoop(Line startNode)
-    {
-        Line slowNode, fastNode1, fastNode2;
-        slowNode = fastNode1 = fastNode2 = startNode;
-
-        while   ((slowNode != null) &&
-                ((fastNode1 = fastNode2.next()) != null) &&
-                ((fastNode2 = fastNode1.next()) != null))
-        {
-            if (slowNode == fastNode1 || slowNode == fastNode2)
-                return true;
-
-            slowNode = slowNode.next();
-        }
-        return false;
+        return polys.toList();
     }
 
     public static List<MatOfPoint> polygons(Mat image)
@@ -177,12 +128,11 @@ public class Detection
         for(MatOfPoint contour : contours)
         {
             // Convert to MatOfPoint2f
-            MatOfPoint2f poly = new MatOfPoint2f();
-            MatOfPoint2f contourf = new MatOfPoint2f();
-            contour.convertTo(contourf, CvType.CV_32FC2);
+
+            MatOfPoint2f contourf = new MatOfPoint2f(contour.toArray());
 
             // Get our Poly
-            Imgproc.approxPolyDP(contourf, poly, 3, true);
+            Imgproc.approxPolyDP(contourf, contourf, 3, true);
 
             // Convert back
             MatOfPoint poly2 = new MatOfPoint(contourf.toArray());
@@ -191,6 +141,45 @@ public class Detection
 
         return polys;
     }
+
+
+    /*public static boolean isRectangle(Point p1, Point p2, Point p3, Point p4)
+    {
+        double buffer = 10;
+        double cx, cy;
+        double dd1, dd2, dd3, dd4;
+
+        cx = (p1.y + p2.y + p3.y + p4.y) / 4;
+        cy = (p1.y + p2.y + p3.y + p4.y) / 4;
+
+        dd1 = Math.pow(cx - p1.x, 2) + Math.pow(cy - p1.y, 2);
+        dd2 = Math.pow(cx - p2.x, 2) + Math.pow(cy - p2.y, 2);
+        dd3 = Math.pow(cx - p3.x, 2) + Math.pow(cy - p3.y, 2);
+        dd4 = Math.pow(cx - p4.x, 2) + Math.pow(cy - p4.y, 2);
+
+        return  Math.abs(dd1 - dd2) <= buffer &&
+                Math.abs(dd1 - dd3) <= buffer &&
+                Math.abs(dd1 - dd4) <= buffer;
+    }*/
+
+    public static boolean hasLoop(Line startNode)
+    {
+        Line slowNode, fastNode1, fastNode2;
+        slowNode = fastNode1 = fastNode2 = startNode;
+
+        while   ((slowNode != null) &&
+                ((fastNode1 = fastNode2.next()) != null) &&
+                ((fastNode2 = fastNode1.next()) != null))
+        {
+            if (slowNode == fastNode1 || slowNode == fastNode2)
+                return true;
+
+            slowNode = slowNode.next();
+        }
+        return false;
+    }
+
+
 
 
     public static Mat doorLines2(Mat mat)
@@ -216,7 +205,7 @@ public class Detection
         Imgproc.blur(door, door, new Size(3, 3));
 
         // Detect the edges of the image
-        Imgproc.Canny(door, door, lowThreshold, lowThreshold*ratio);
+        Imgproc.Canny(door, door, lowThreshold, lowThreshold * ratio);
 
         // Extract the lines from the image
         Mat lines = new Mat();
@@ -224,6 +213,16 @@ public class Detection
 
         return lines;
 
+    }
+
+    public static List<Line> bestFitDoor(List<Point> points)
+    {
+        for(Point p : points)
+        {
+
+        }
+
+        return null;
     }
 
     private static Mat addBorder(Mat img, int borderSize) {
@@ -310,6 +309,11 @@ public class Detection
 
 
        return contours;
+    }
+
+    public static Mat colourBlobs(Mat image, Mat background)
+    {
+        return null;
     }
 
     public static List<Rect> getBounds(List<MatOfPoint> contours)
