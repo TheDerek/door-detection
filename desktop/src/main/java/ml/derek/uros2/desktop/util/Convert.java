@@ -104,7 +104,13 @@ public class Convert
 
     public static BufferedImage bufferedImage(Mat mat)
     {
-        return bufferedImage(mat, BufferedImage.TYPE_3BYTE_BGR);
+        try {
+            return bufferedImage(mat, BufferedImage.TYPE_3BYTE_BGR);
+        }  catch(ArrayIndexOutOfBoundsException e)
+        {
+            return bufferedImage(mat, BufferedImage.TYPE_BYTE_GRAY);
+        }
+
     }
 
     public static List<Point> pointList(Mat points)

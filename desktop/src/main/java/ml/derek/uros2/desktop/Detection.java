@@ -124,7 +124,6 @@ public class Detection
         for(MatOfPoint contour : contours)
         {
             // Convert to MatOfPoint2f
-
             MatOfPoint2f contourf = new MatOfPoint2f(contour.toArray());
 
             // Get our Poly

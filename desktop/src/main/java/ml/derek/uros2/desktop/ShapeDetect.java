@@ -4,6 +4,7 @@ import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ShapeDetect
@@ -76,6 +77,62 @@ public class ShapeDetect
 
     public static Mat detectShapes(Mat image)
     {
-        throw new NotImplementedException();
+        // Create a local copy so we don't accidentally override the original
+        Mat src = image.clone();
+
+        // Convert the image to greyScale
+        Mat grey = new Mat();
+        Imgproc.cvtColor(src, grey, Imgproc.COLOR_BGR2GRAY);
+
+        // Outline our images and get the edges
+        Mat bw = new Mat();
+        Imgproc.Canny(grey, bw, 50, 5);
+
+        // Find the contours in the image
+        List<MatOfPoint> contours = new ArrayList<>();
+        Imgproc.findContours(bw.clone(), contours, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+
+        // Get ready for the magic
+        Mat dst = src.clone();
+        List<MatOfPoint> rects = new ArrayList<>();
+
+        for(int i = 0; i < contours.size(); i++)
+        {
+            MatOfPoint contour = contours.get(i);
+            MatOfPoint2f contourf = new MatOfPoint2f(contour.toArray());
+            MatOfPoint2f approxContour = new MatOfPoint2f();
+
+            // Get our Poly
+            double e = Imgproc.arcLength(contourf, true) * 0.02;
+            Imgproc.approxPolyDP(contourf, approxContour, e, true);
+
+            // Convert back
+            MatOfPoint approx = new MatOfPoint(approxContour.toArray());
+
+            // Skip small and non convex-objects
+            if(Imgproc.contourArea(contour.clone(), false) < 100)
+                continue;
+
+            if(!Imgproc.isContourConvex(approx))
+                continue;
+
+            int sides = approx.height();
+            if(sides == 4)
+            {
+                // Get the cosines of all the corners
+                rects.add(approx);
+                setLabel(dst, "RECT", contour);
+            }
+
+            rects.add(approx);
+
+
+            //setLabel(dst, "Label", contour);
+
+        }
+
+        dst = Draw.contours(rects, dst);
+
+        return dst;
     }
 }

@@ -22,11 +22,12 @@ public class Test
     {
         System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
 
-        File file = new File("simple/close1.jpg");
+        //File file = new File("shapes/shapes.jpg");
+        File file = new File("simple/far1.jpg");
         BufferedImage image = ImageIO.read(file);
         Mat door = Convert.mat(image);
 
-        List<Line> lineList =  Detection.imageLines(door);
+        /*List<Line> lineList =  Detection.imageLines(door);
         List<Point> intersections = Detection.lineIntersections(lineList, door.size());
         List<Point> polys = Detection.getPolysFromIntersections(new MatOfPoint2f(intersections.toArray(new Point[intersections.size()])));
 
@@ -39,9 +40,10 @@ public class Test
 
         List<MatOfPoint> polys2 = Detection.polygons(doorLines);
         //polys2 = Operations.trim(polys2, 4);
-        Mat doorPolys2 = Draw.contours(polys2, new Mat(door.size(), door.type()));
+        Mat doorPolys2 = Draw.contours(polys2, new Mat(door.size(), door.type()));*/
 
+        Mat shapes = ShapeDetect.detectShapes(door);
 
-        JFrame frame = Display.image(doorPolys2, doorPolys);
+        JFrame frame = Display.image(shapes);
     }
 }

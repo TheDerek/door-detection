@@ -15,8 +15,8 @@ public class Draw
     public static Mat contours(List<MatOfPoint> contours, Mat baseImage)
     {
         Random rng = new Random();
-        //Mat drawing = baseImage.clone();
-        Mat drawing = new Mat(baseImage.rows(), baseImage.cols(), baseImage.type());
+        Mat drawing = baseImage.clone();
+        //Mat drawing = new Mat(baseImage.rows(), baseImage.cols(), baseImage.type());
         for( int i = 0; i < contours.size(); i++ )
         {
             Scalar color = new Scalar(rng.nextInt(255), rng.nextInt(255), rng.nextInt(255));
