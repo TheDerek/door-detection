@@ -4,6 +4,7 @@ package ml.derek.uros2.desktop;
 import ml.derek.uros2.desktop.util.Convert;
 import ml.derek.uros2.desktop.util.Display;
 import ml.derek.uros2.desktop.util.Line;
+import ml.derek.uros2.desktop.util.Operations;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 
@@ -21,7 +22,7 @@ public class Test
     {
         System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
 
-        File file = new File("simple/close2.jpg");
+        File file = new File("simple/close1.jpg");
         BufferedImage image = ImageIO.read(file);
         Mat door = Convert.mat(image);
 
@@ -36,8 +37,9 @@ public class Test
         polyList.add(new MatOfPoint(polys.toArray(new Point[polys.size()])));
         Mat doorPolys = Draw.contours(polyList, door);
 
-        List<MatOfPoint> polys2 = Detection.polygons(doorPolys);
-        Mat doorPolys2 = Draw.contours(polys2, door);
+        List<MatOfPoint> polys2 = Detection.polygons(doorLines);
+        //polys2 = Operations.trim(polys2, 4);
+        Mat doorPolys2 = Draw.contours(polys2, new Mat(door.size(), door.type()));
 
 
         JFrame frame = Display.image(doorPolys2, doorPolys);

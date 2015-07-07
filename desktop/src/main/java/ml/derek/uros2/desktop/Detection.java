@@ -1,18 +1,14 @@
 package ml.derek.uros2.desktop;
 
 import ml.derek.uros2.desktop.util.Convert;
-import ml.derek.uros2.desktop.util.Display;
 import ml.derek.uros2.desktop.util.Line;
-import ml.derek.uros2.desktop.util.Measure;
 import org.opencv.core.*;
-import org.opencv.features2d.FeatureDetector;
 import org.opencv.imgproc.Imgproc;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class Detection
 {
@@ -113,7 +109,7 @@ public class Detection
         Imgproc.cvtColor(door, door, Imgproc.COLOR_BGR2GRAY);
 
         //Remove noise from the image
-        Imgproc.blur(door, door, new Size(3, 3));
+        //Imgproc.blur(door, door, new Size(3, 3));
 
         // Detect the edges of the image
         Imgproc.Canny(door, door, 100, 255);
@@ -132,7 +128,7 @@ public class Detection
             MatOfPoint2f contourf = new MatOfPoint2f(contour.toArray());
 
             // Get our Poly
-            Imgproc.approxPolyDP(contourf, contourf, 3, true);
+            Imgproc.approxPolyDP(contourf, contourf, 0.001, true);
 
             // Convert back
             MatOfPoint poly2 = new MatOfPoint(contourf.toArray());

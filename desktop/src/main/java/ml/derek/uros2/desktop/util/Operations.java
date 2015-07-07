@@ -2,6 +2,7 @@ package ml.derek.uros2.desktop.util;
 
 import ml.derek.uros2.desktop.Detection;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
@@ -59,6 +60,18 @@ public class Operations
         }
 
         return merged;
+    }
+
+    public static List<MatOfPoint> trim(List<MatOfPoint> untrimmed, int sides)
+    {
+        List<MatOfPoint> trimmed = new ArrayList<>();
+        for(MatOfPoint poly : untrimmed)
+        {
+            if(poly.height() == sides)
+                trimmed.add(poly);
+        }
+
+        return trimmed;
     }
 
     public static List<Line> joinPoints(Point[] points)
