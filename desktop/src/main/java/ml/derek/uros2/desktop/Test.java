@@ -30,16 +30,16 @@ public class Test
         List<Point> polys = Detection.getPolysFromIntersections(new MatOfPoint2f(intersections.toArray(new Point[intersections.size()])));
 
         Mat doorLines = Draw.lines(lineList, door);
-        doorLines = Draw.points(intersections, doorLines);
+        //doorLines = Draw.points(intersections, doorLines);
 
-        //List<MatOfPoint> polys = Detection.polygons(doorLines);
         List<MatOfPoint> polyList = new ArrayList<>();
         polyList.add(new MatOfPoint(polys.toArray(new Point[polys.size()])));
         Mat doorPolys = Draw.contours(polyList, door);
 
-        BufferedImage lineImage = Convert.bufferedImage(doorLines);
-        BufferedImage polyImage = Convert.bufferedImage(doorPolys);
+        List<MatOfPoint> polys2 = Detection.polygons(doorPolys);
+        Mat doorPolys2 = Draw.contours(polys2, door);
 
-        JFrame frame = Display.image(lineImage, polyImage);
+
+        JFrame frame = Display.image(doorPolys2, doorPolys);
     }
 }
