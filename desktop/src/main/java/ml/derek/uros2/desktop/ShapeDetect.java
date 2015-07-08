@@ -117,15 +117,26 @@ public class ShapeDetect
                 continue;
 
             int sides = approx.height();
-            if(sides == 4)
+
+            if(sides > 2)
             {
-                // Get the cosines of all the corners
                 rects.add(approx);
-                setLabel(dst, "RECT", contour);
+
+                if(sides == 3)
+                    setLabel(dst, "TRI", contour);
+
+                if(sides == 4)
+                    setLabel(dst, "QUAD", contour);
+
+                if(sides == 5)
+                    setLabel(dst, "PENT", contour);
+
+                if(sides == 6)
+                    setLabel(dst, "HEX", contour);
             }
 
-            rects.add(approx);
 
+            //rects.add(approx);
 
             //setLabel(dst, "Label", contour);
 

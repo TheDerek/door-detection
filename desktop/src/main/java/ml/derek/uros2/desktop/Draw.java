@@ -19,8 +19,9 @@ public class Draw
         //Mat drawing = new Mat(baseImage.rows(), baseImage.cols(), baseImage.type());
         for( int i = 0; i < contours.size(); i++ )
         {
-            Scalar color = new Scalar(rng.nextInt(255), rng.nextInt(255), rng.nextInt(255));
-            Imgproc.drawContours(drawing, contours, i, color, 1, Imgproc.RETR_FLOODFILL, new Mat(), 0, new Point());
+            //Scalar color = new Scalar(rng.nextInt(255), rng.nextInt(255), rng.nextInt(255));
+            Scalar color = new Scalar(255, 0, 0);
+            Imgproc.drawContours(drawing, contours, i, color, 3, Imgproc.RETR_FLOODFILL, new Mat(), 0, new Point());
             //Imgproc.fillConvexPoly(drawing, contours.get(i), color);
         }
 
