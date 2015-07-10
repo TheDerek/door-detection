@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Test
 {
@@ -40,8 +39,7 @@ public class Test
         //polys2 = Operations.trim(polys2, 4);
         Mat doorPolys2 = Draw.contours(polys2, new Mat(door.size(), door.type()));*/
 
-        Map<MatType, Mat> mats = ShapeDetect.detectShapes(door, 4);
-        Mat shapes = mats.get(MatType.Full);
+        Mat shapes = ShapeDetect.detectShapes(door, MatType.Full, 4);
 
         JFrame frame = Display.image(shapes);
     }

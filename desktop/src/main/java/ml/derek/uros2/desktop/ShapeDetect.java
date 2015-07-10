@@ -78,7 +78,7 @@ public class ShapeDetect
         Imgproc.putText(image, label, point, fontFace, scale, new Scalar(0, 0, 0), thickness);
     }
 
-    public static Map<MatType, Mat> detectShapes(Mat image, int... desiredSizes)
+    public static Mat detectShapes(Mat image, MatType matType, int... desiredSizes)
     {
         // Create a local copy so we don't accidentally override the original
         Mat src = image.clone();
@@ -140,14 +140,24 @@ public class ShapeDetect
 
         }
 
-        dst = Draw.contours(rects, dst);
-        bw = Draw.contours(rects, bw);
+        if(matType == MatType.Binary)
+        {
+            bw.convertTo(bw, src.type());
+            bw = Draw.contours(rects, bw);
+            return bw;
+        }
 
-        Map<MatType, Mat> map = new HashMap<>();
-        map.put(MatType.Raw, src);
-        map.put(MatType.Binary, bw);
-        map.put(MatType.Full, dst);
+        if(matType == MatType.Raw)
+        {
+            return src;
+        }
 
-        return map;
+        if(matType == MatType.Full)
+        {
+            dst = Draw.contours(rects, dst);
+            return dst;
+        }
+
+        return src;
     }
 }

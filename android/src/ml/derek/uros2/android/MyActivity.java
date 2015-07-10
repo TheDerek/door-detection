@@ -115,8 +115,7 @@ public class MyActivity extends Activity implements CameraBridgeViewBase.CvCamer
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame)
     {
         Mat newImage = inputFrame.rgba();
-        Map<MatType, Mat> mats = ShapeDetect.detectShapes(newImage, 4);
-        Mat shapes = mats.get(selectedMat);
+        Mat shapes = ShapeDetect.detectShapes(newImage, selectedMat, 4);
 
         if(shapes != null)
             return shapes;
