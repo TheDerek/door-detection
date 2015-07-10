@@ -9,6 +9,7 @@ import android.view.WindowManager;
 import ml.derek.uros2.desktop.Detection;
 import ml.derek.uros2.desktop.Draw;
 import ml.derek.uros2.desktop.ShapeDetect;
+import ml.derek.uros2.desktop.util.MatType;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.LoaderCallbackInterface;
@@ -16,6 +17,8 @@ import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
+
+import java.util.Map;
 
 public class MyActivity extends Activity implements CameraBridgeViewBase.CvCameraViewListener2
 {
@@ -91,7 +94,8 @@ public class MyActivity extends Activity implements CameraBridgeViewBase.CvCamer
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame)
     {
         Mat newImage = inputFrame.rgba();
-        Mat shapes = ShapeDetect.detectShapes(newImage, 4);
+        Map<MatType, Mat> mats = ShapeDetect.detectShapes(newImage, 4);
+        Mat shapes = mats.get(MatType.Full);
 
         if(shapes != null)
             return shapes;

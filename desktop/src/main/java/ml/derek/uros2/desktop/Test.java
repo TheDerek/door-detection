@@ -1,10 +1,7 @@
 package ml.derek.uros2.desktop;
 
 
-import ml.derek.uros2.desktop.util.Convert;
-import ml.derek.uros2.desktop.util.Display;
-import ml.derek.uros2.desktop.util.Line;
-import ml.derek.uros2.desktop.util.Operations;
+import ml.derek.uros2.desktop.util.*;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 
@@ -15,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Test
 {
@@ -42,7 +40,8 @@ public class Test
         //polys2 = Operations.trim(polys2, 4);
         Mat doorPolys2 = Draw.contours(polys2, new Mat(door.size(), door.type()));*/
 
-        Mat shapes = ShapeDetect.detectShapes(door);
+        Map<MatType, Mat> mats = ShapeDetect.detectShapes(door, 4);
+        Mat shapes = mats.get(MatType.Full);
 
         JFrame frame = Display.image(shapes);
     }

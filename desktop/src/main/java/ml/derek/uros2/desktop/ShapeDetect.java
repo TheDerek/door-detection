@@ -1,11 +1,14 @@
 package ml.derek.uros2.desktop;
 
+import ml.derek.uros2.desktop.util.MatType;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ShapeDetect
 {
@@ -75,7 +78,7 @@ public class ShapeDetect
         Imgproc.putText(image, label, point, fontFace, scale, new Scalar(0, 0, 0), thickness);
     }
 
-    public static Mat detectShapes(Mat image, int... desiredSizes)
+    public static Map<MatType, Mat> detectShapes(Mat image, int... desiredSizes)
     {
         // Create a local copy so we don't accidentally override the original
         Mat src = image.clone();
@@ -139,6 +142,11 @@ public class ShapeDetect
 
         dst = Draw.contours(rects, dst);
 
-        return dst;
+        Map<MatType, Mat> map = new HashMap<>();
+        map.put(MatType.Raw, src);
+        map.put(MatType.Binary, bw);
+        map.put(MatType.Full, dst);
+
+        return map;
     }
 }
