@@ -147,6 +147,12 @@ public class ShapeDetect
             return bw;
         }
 
+        if(matType == MatType.Gray)
+        {
+            grey = Draw.contours(rects, grey);
+            return grey;
+        }
+
         if(matType == MatType.Raw)
         {
             return src;
