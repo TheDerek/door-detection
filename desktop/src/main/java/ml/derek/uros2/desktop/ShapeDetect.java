@@ -75,7 +75,7 @@ public class ShapeDetect
         Imgproc.putText(image, label, point, fontFace, scale, new Scalar(0, 0, 0), thickness);
     }
 
-    public static Mat detectShapes(Mat image)
+    public static Mat detectShapes(Mat image, int... desiredSizes)
     {
         // Create a local copy so we don't accidentally override the original
         Mat src = image.clone();
@@ -120,19 +120,14 @@ public class ShapeDetect
 
             if(sides > 2)
             {
-                rects.add(approx);
-
-                if(sides == 3)
-                    setLabel(dst, "TRI", contour);
-
-                if(sides == 4)
-                    setLabel(dst, "QUAD", contour);
-
-                if(sides == 5)
-                    setLabel(dst, "PENT", contour);
-
-                if(sides == 6)
-                    setLabel(dst, "HEX", contour);
+               for(int edgeCount : desiredSizes)
+               {
+                   if(sides == edgeCount)
+                   {
+                       rects.add(approx);
+                       setLabel(dst, String.valueOf(sides), contour);
+                   }
+               }
             }
 
 

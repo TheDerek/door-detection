@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.WindowManager;
 import ml.derek.uros2.desktop.Detection;
 import ml.derek.uros2.desktop.Draw;
+import ml.derek.uros2.desktop.ShapeDetect;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.LoaderCallbackInterface;
@@ -90,10 +91,10 @@ public class MyActivity extends Activity implements CameraBridgeViewBase.CvCamer
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame)
     {
         Mat newImage = inputFrame.rgba();
-        Rect doorRect = Detection.detectDoor(newImage);
+        Mat shapes = ShapeDetect.detectShapes(newImage, 4);
 
-        if(doorRect != null)
-            return Draw.rect(doorRect, newImage);
+        if(shapes != null)
+            return shapes;
         else
             return newImage;
     }
