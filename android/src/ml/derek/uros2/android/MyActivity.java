@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import ml.derek.uros2.desktop.Detection;
 import ml.derek.uros2.desktop.Draw;
 import ml.derek.uros2.desktop.ShapeDetect;
@@ -23,12 +25,31 @@ import java.util.Map;
 public class MyActivity extends Activity implements CameraBridgeViewBase.CvCameraViewListener2
 {
     private CameraBridgeViewBase mOpenCvCameraView;
+    private MatType selectedMat = MatType.Full;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+
+        // Create buttons for enums
+        LinearLayout buttonHolder = (LinearLayout) findViewById(R.id.buttonHolder);
+        for(MatType matType : MatType.values())
+        {
+            final Button button = new Button(getApplicationContext());
+            button.setText(matType.toString());
+            button.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    selectedMat = MatType.valueOf(button.getText().toString());
+                }
+            });
+            buttonHolder.addView(button);
+
+        }
 
         Log.i("camera", "called onCreate");
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -95,7 +116,7 @@ public class MyActivity extends Activity implements CameraBridgeViewBase.CvCamer
     {
         Mat newImage = inputFrame.rgba();
         Map<MatType, Mat> mats = ShapeDetect.detectShapes(newImage, 4);
-        Mat shapes = mats.get(MatType.Full);
+        Mat shapes = mats.get(selectedMat);
 
         if(shapes != null)
             return shapes;

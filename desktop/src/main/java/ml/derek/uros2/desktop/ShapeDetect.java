@@ -141,6 +141,7 @@ public class ShapeDetect
         }
 
         dst = Draw.contours(rects, dst);
+        bw = Draw.contours(rects, bw);
 
         Map<MatType, Mat> map = new HashMap<>();
         map.put(MatType.Raw, src);
