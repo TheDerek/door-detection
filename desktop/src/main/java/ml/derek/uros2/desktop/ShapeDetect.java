@@ -96,6 +96,10 @@ public class ShapeDetect
         Mat blur = new Mat();
         Imgproc.blur(grey, blur, new Size(3.7, 3.7));
 
+        // Threshold the image
+        Mat thresh = new Mat();
+        Imgproc.threshold(blur, thresh, 128, 255, Imgproc.THRESH_BINARY);
+
         // Outline our images and get the edges
         Mat bw = new Mat();
         Imgproc.Canny(blur, bw, thresh1, thres2);
@@ -170,6 +174,12 @@ public class ShapeDetect
         {
             blur = Draw.contours(rects, blur);
             return blur;
+        }
+
+        if(matType == MatType.Thresh)
+        {
+            thresh = Draw.contours(rects, thresh);
+            return thresh;
         }
 
 
