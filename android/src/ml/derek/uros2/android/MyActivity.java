@@ -88,7 +88,7 @@ public class MyActivity extends Activity implements CameraBridgeViewBase.CvCamer
 
             }
         });
-        editThresh1.setText("100");
+        editThresh1.setText("128");
         buttonHolder.addView(editThresh1);
 
         // Create threshold sliders
@@ -123,7 +123,7 @@ public class MyActivity extends Activity implements CameraBridgeViewBase.CvCamer
 
             }
         });
-        editThresh2.setText("50");
+        editThresh2.setText("255");
         buttonHolder.addView(editThresh2);
 
         Log.i("camera", "called onCreate");

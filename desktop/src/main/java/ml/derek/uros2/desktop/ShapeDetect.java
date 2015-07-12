@@ -78,7 +78,7 @@ public class ShapeDetect
         Imgproc.putText(image, label, point, fontFace, scale, new Scalar(0, 0, 0), thickness);
     }
 
-    public static Mat detectShapes(double thresh1, double thres2, Mat image, MatType matType, int... desiredSizes)
+    public static Mat detectShapes(double thresh1, double thresh2, Mat image, MatType matType, int... desiredSizes)
     {
         // Create a local copy so we don't accidentally override the original
         Mat src = image.clone();
@@ -96,13 +96,13 @@ public class ShapeDetect
         Mat blur = new Mat();
         Imgproc.blur(grey, blur, new Size(3.7, 3.7));
 
-        // Threshold the image
+        // Threshold the image (128, 255)
         Mat thresh = new Mat();
-        Imgproc.threshold(blur, thresh, 128, 255, Imgproc.THRESH_BINARY);
+        Imgproc.threshold(blur, thresh, thresh1, thresh2, Imgproc.THRESH_BINARY);
 
-        // Outline our images and get the edges
+        // Outline our images and get the edges (100, 50)
         Mat bw = new Mat();
-        Imgproc.Canny(blur, bw, thresh1, thres2);
+        Imgproc.Canny(blur, bw, 100, 50);
 
         // Find the contours in the image
         List<MatOfPoint> contours = new ArrayList<>();
