@@ -2,5 +2,5 @@ package ml.derek.uros2.desktop.util;
 
 public enum MatType
 {
-    Full, Raw, Binary, Gray
+    Full, Raw, Binary, Gray, Blur, HSV
 }

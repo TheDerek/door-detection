@@ -39,7 +39,7 @@ public class Test
         //polys2 = Operations.trim(polys2, 4);
         Mat doorPolys2 = Draw.contours(polys2, new Mat(door.size(), door.type()));*/
 
-        Mat shapes = ShapeDetect.detectShapes(door, MatType.Full, 4);
+        Mat shapes = ShapeDetect.detectShapes(100, 50, door, MatType.Full, 4);
 
         JFrame frame = Display.image(shapes);
     }

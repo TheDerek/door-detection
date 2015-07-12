@@ -78,18 +78,27 @@ public class ShapeDetect
         Imgproc.putText(image, label, point, fontFace, scale, new Scalar(0, 0, 0), thickness);
     }
 
-    public static Mat detectShapes(Mat image, MatType matType, int... desiredSizes)
+    public static Mat detectShapes(double thresh1, double thres2, Mat image, MatType matType, int... desiredSizes)
     {
         // Create a local copy so we don't accidentally override the original
         Mat src = image.clone();
+
+        // Convert image to hsv
+        Mat hsv = new Mat();
+        Imgproc.cvtColor(src, hsv, Imgproc.COLOR_RGB2HSV);
+        hsv.convertTo(hsv, CvType.CV_8UC1, 1, 10);
 
         // Convert the image to greyScale
         Mat grey = new Mat();
         Imgproc.cvtColor(src, grey, Imgproc.COLOR_BGR2GRAY);
 
+        // Blur the image
+        Mat blur = new Mat();
+        Imgproc.blur(grey, blur, new Size(3.7, 3.7));
+
         // Outline our images and get the edges
         Mat bw = new Mat();
-        Imgproc.Canny(grey, bw, 50, 5);
+        Imgproc.Canny(blur, bw, thresh1, thres2);
 
         // Find the contours in the image
         List<MatOfPoint> contours = new ArrayList<>();
@@ -137,14 +146,18 @@ public class ShapeDetect
             //rects.add(approx);
 
             //setLabel(dst, "Label", contour);
-
         }
 
-        if(matType == MatType.Binary)
+
+        if(matType == MatType.Raw)
         {
-            bw.convertTo(bw, src.type());
-            bw = Draw.contours(rects, bw);
-            return bw;
+            return src;
+        }
+
+        if(matType == MatType.HSV)
+        {
+            hsv = Draw.contours(rects, hsv);
+            return hsv;
         }
 
         if(matType == MatType.Gray)
@@ -153,9 +166,18 @@ public class ShapeDetect
             return grey;
         }
 
-        if(matType == MatType.Raw)
+        if(matType == MatType.Blur)
         {
-            return src;
+            blur = Draw.contours(rects, blur);
+            return blur;
+        }
+
+
+        if(matType == MatType.Binary)
+        {
+            bw.convertTo(bw, src.type());
+            bw = Draw.contours(rects, bw);
+            return bw;
         }
 
         if(matType == MatType.Full)
