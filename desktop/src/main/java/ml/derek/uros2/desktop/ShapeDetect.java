@@ -102,7 +102,7 @@ public class ShapeDetect
 
         // Outline our images and get the edges (100, 50)
         Mat bw = new Mat();
-        Imgproc.Canny(blur, bw, 100, 50);
+        Imgproc.Canny(thresh, bw, 100, 50);
 
         // Find the contours in the image
         List<MatOfPoint> contours = new ArrayList<>();
