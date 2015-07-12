@@ -12,6 +12,12 @@ import java.util.Map;
 
 public class ShapeDetect
 {
+
+    public static Mat structRect = Imgproc.getStructuringElement(
+        Imgproc.CV_SHAPE_RECT,
+        new Size(5, 2),
+        new Point(5, 5));
+
     /**
      * Find the cosine angle between the vectors p0->p1 and
      * p0->p2.
