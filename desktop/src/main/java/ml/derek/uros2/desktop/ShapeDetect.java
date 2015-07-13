@@ -132,7 +132,8 @@ public class ShapeDetect
             MatOfPoint approx = new MatOfPoint(approxContour.toArray());
 
             // Skip small and non convex-objects
-            if(Imgproc.contourArea(contour.clone(), false) < 100)
+            // old area was 100
+            if(Imgproc.contourArea(contour.clone(), false) < 1000)
                 continue;
 
             if(!Imgproc.isContourConvex(approx))
@@ -147,11 +148,10 @@ public class ShapeDetect
                    if(sides == edgeCount)
                    {
                        Rect bounds = Imgproc.boundingRect(approx);
-                       double ratio = (double)bounds.height / (double)bounds.width;
                        if(Detection.withinAspectRatio(bounds, 1.81, 3.29))
                        {
                            rects.add(approx);
-                           setLabel(dst, String.valueOf(ratio), contour);
+                           setLabel(dst, String.valueOf(Imgproc.contourArea(contour.clone(), false)), contour);
                        }
                    }
                }
@@ -169,11 +169,7 @@ public class ShapeDetect
             return src;
         }
 
-        if(matType == MatType.HSV)
-        {
-            hsv = Draw.contours(rects, hsv);
-            return hsv;
-        }
+
 
         if(matType == MatType.Gray)
         {
@@ -208,11 +204,9 @@ public class ShapeDetect
         }
 
 
-        if(matType == MatType.Binary || matType == MatType.BinarySimple)
+        if(matType == MatType.Binary)
         {
-            if(matType == MatType.Binary)
-                bw = Draw.contours(rects, bw);
-
+            bw = Draw.contours(rects, bw);
             return bw;
         }
 
