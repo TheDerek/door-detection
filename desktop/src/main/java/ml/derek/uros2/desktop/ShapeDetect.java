@@ -13,11 +13,6 @@ import java.util.Map;
 public class ShapeDetect
 {
 
-    /*public static Mat structRect = Imgproc.getStructuringElement(
-        Imgproc.CV_SHAPE_RECT,
-        new Size(5, 2),
-        new Point(5, 5));*/
-
     /**
      * Find the cosine angle between the vectors p0->p1 and
      * p0->p2.
@@ -145,14 +140,19 @@ public class ShapeDetect
 
             int sides = approx.height();
 
-            //if(sides > 2)
+            if(sides > 2)
             {
                for(int edgeCount : desiredSizes)
                {
                    if(sides == edgeCount)
                    {
-                       rects.add(approx);
-                       setLabel(dst, String.valueOf(sides), contour);
+                       Rect bounds = Imgproc.boundingRect(approx);
+                       double ratio = (double)bounds.height / (double)bounds.width;
+                       if(Detection.withinAspectRatio(bounds, 1.81, 3.29))
+                       {
+                           rects.add(approx);
+                           setLabel(dst, String.valueOf(ratio), contour);
+                       }
                    }
                }
             }

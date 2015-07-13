@@ -19,7 +19,7 @@ public class Test
     {
         System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
 
-        File file = new File("simple/close2.jpg");
+        File file = new File("shapes/rects.jpg");
         //File file = new File("simple/door4.jpg");
         BufferedImage image = ImageIO.read(file);
         Mat door = Convert.mat(image);
@@ -27,7 +27,7 @@ public class Test
         // Best: (350, 115) (300, 90)
         double ratio = 1/3;
         double upper = 350;
-        Mat shapes = ShapeDetect.detectShapes(300, 90, door, MatType.Binary, 4);
+        Mat shapes = ShapeDetect.detectShapes(300, 90, door, MatType.Full, 4);
 
         JFrame frame = Display.image(shapes);
     }
