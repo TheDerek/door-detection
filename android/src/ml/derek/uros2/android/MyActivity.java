@@ -19,6 +19,7 @@ import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
 
@@ -191,10 +192,13 @@ public class MyActivity extends Activity implements CameraBridgeViewBase.CvCamer
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame)
     {
         Mat newImage = inputFrame.rgba();
-        Mat shapes = ShapeDetect.detectShapes(thresh1, thresh2, newImage, selectedMat, 4);
+        MatOfPoint door = ShapeDetect.getDoor(thresh1, thresh2, newImage);
 
-        if(shapes != null)
-            return shapes;
+        if(door != null)
+        {
+            newImage = Draw.contours(newImage, door);
+            return newImage;
+        }
         else
             return newImage;
     }

@@ -7,6 +7,7 @@ import org.opencv.imgproc.Imgproc;
 
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -22,6 +23,23 @@ public class Draw
             //Scalar color = new Scalar(rng.nextInt(255), rng.nextInt(255), rng.nextInt(255));
             Scalar color = new Scalar(255, 0, 0);
             Imgproc.drawContours(drawing, contours, i, color, 3, Imgproc.RETR_FLOODFILL, new Mat(), 0, new Point());
+            //Imgproc.fillConvexPoly(drawing, contours.get(i), color);
+        }
+
+        return drawing;
+    }
+
+    public static Mat contours(Mat baseImage, MatOfPoint... contours)
+    {
+        Random rng = new Random();
+        Mat drawing = baseImage.clone();
+        List<MatOfPoint> contourList = Arrays.asList(contours);
+        //Mat drawing = new Mat(baseImage.rows(), baseImage.cols(), baseImage.type());
+        for( int i = 0; i < contours.length; i++ )
+        {
+            //Scalar color = new Scalar(rng.nextInt(255), rng.nextInt(255), rng.nextInt(255));
+            Scalar color = new Scalar(255, 0, 0);
+            Imgproc.drawContours(drawing, contourList, i, color, 3, Imgproc.RETR_FLOODFILL, new Mat(), 0, new Point());
             //Imgproc.fillConvexPoly(drawing, contours.get(i), color);
         }
 
