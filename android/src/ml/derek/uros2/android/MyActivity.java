@@ -28,8 +28,9 @@ public class MyActivity extends Activity implements CameraBridgeViewBase.CvCamer
 {
     private CameraBridgeViewBase mOpenCvCameraView;
     private MatType selectedMat = MatType.Full;
-    private double thresh1 = 350;
-    private double thresh2 = 100;
+    private Rect regionOfIntrest;
+    private double thresh1 = 150;
+    private double thresh2 = 80;
 
     @Override
     public void onCreate(Bundle savedInstanceState)

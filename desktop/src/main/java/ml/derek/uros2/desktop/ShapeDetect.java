@@ -105,7 +105,7 @@ public class ShapeDetect
         Imgproc.morphologyEx(grey, morph, Imgproc.MORPH_OPEN, new Mat());
         //Imgproc.morphologyEx(morph, morph, Imgproc.MORPH_GRADIENT, new Mat());
 
-        // Outline our images and get the edges (100, 50)
+        // Outline our images and get the edges (100, 50) Better: (150, 80)
         Mat bw = new Mat();
         Imgproc.Canny(morph, bw, thresh1, thresh2);
 
