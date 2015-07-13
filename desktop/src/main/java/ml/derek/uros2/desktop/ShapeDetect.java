@@ -107,16 +107,17 @@ public class ShapeDetect
         Imgproc.threshold(blur, thresh, thresh1, thresh2, Imgproc.THRESH_BINARY);
 
         Mat morph = new Mat();
-        Imgproc.morphologyEx(thresh, morph, Imgproc.MORPH_GRADIENT, new Mat());
+        Imgproc.morphologyEx(grey, morph, Imgproc.MORPH_OPEN, new Mat());
         //Imgproc.morphologyEx(morph, morph, Imgproc.MORPH_GRADIENT, new Mat());
 
         // Outline our images and get the edges (100, 50)
         Mat bw = new Mat();
-        Imgproc.Canny(grey, bw, 100, 50);
+        Imgproc.Canny(morph, bw, thresh1, thresh2);
 
         // Find the contours in the image
         List<MatOfPoint> contours = new ArrayList<>();
-        Imgproc.findContours(bw.clone(), contours, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+        // Imgproc.findContours(bw.clone(), contours, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+        Imgproc.findContours(bw.clone(), contours, new Mat(), Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE);
 
         // Get ready for the magic
         Mat dst = src.clone();
@@ -144,7 +145,7 @@ public class ShapeDetect
 
             int sides = approx.height();
 
-            if(sides > 2)
+            //if(sides > 2)
             {
                for(int edgeCount : desiredSizes)
                {
@@ -198,11 +199,20 @@ public class ShapeDetect
             return thresh;
         }
 
-
-        if(matType == MatType.Binary)
+        if(matType == MatType.Contours)
         {
-            bw.convertTo(bw, src.type());
-            bw = Draw.contours(rects, bw);
+            //Mat c = new Mat(src.size(), src.type());
+            Mat c = grey.clone();
+            Draw.contours(contours, c);
+            return c;
+        }
+
+
+        if(matType == MatType.Binary || matType == MatType.BinarySimple)
+        {
+            if(matType == MatType.Binary)
+                bw = Draw.contours(rects, bw);
+
             return bw;
         }
 

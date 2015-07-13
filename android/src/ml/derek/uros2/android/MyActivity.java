@@ -28,8 +28,8 @@ public class MyActivity extends Activity implements CameraBridgeViewBase.CvCamer
 {
     private CameraBridgeViewBase mOpenCvCameraView;
     private MatType selectedMat = MatType.Full;
-    private double thresh1 = 100;
-    private double thresh2 = 50;
+    private double thresh1 = 350;
+    private double thresh2 = 100;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -88,7 +88,7 @@ public class MyActivity extends Activity implements CameraBridgeViewBase.CvCamer
 
             }
         });
-        editThresh1.setText("128");
+        editThresh1.setText(String.valueOf(thresh1));
         buttonHolder.addView(editThresh1);
 
         // Create threshold sliders
@@ -123,7 +123,7 @@ public class MyActivity extends Activity implements CameraBridgeViewBase.CvCamer
 
             }
         });
-        editThresh2.setText("255");
+        editThresh2.setText(String.valueOf(thresh2));
         buttonHolder.addView(editThresh2);
 
         Log.i("camera", "called onCreate");
