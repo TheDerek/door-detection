@@ -13,10 +13,10 @@ import java.util.Map;
 public class ShapeDetect
 {
 
-    public static Mat structRect = Imgproc.getStructuringElement(
+    /*public static Mat structRect = Imgproc.getStructuringElement(
         Imgproc.CV_SHAPE_RECT,
         new Size(5, 2),
-        new Point(5, 5));
+        new Point(5, 5));*/
 
     /**
      * Find the cosine angle between the vectors p0->p1 and
@@ -106,9 +106,13 @@ public class ShapeDetect
         Mat thresh = new Mat();
         Imgproc.threshold(blur, thresh, thresh1, thresh2, Imgproc.THRESH_BINARY);
 
+        Mat morph = new Mat();
+        Imgproc.morphologyEx(thresh, morph, Imgproc.MORPH_GRADIENT, new Mat());
+        //Imgproc.morphologyEx(morph, morph, Imgproc.MORPH_GRADIENT, new Mat());
+
         // Outline our images and get the edges (100, 50)
         Mat bw = new Mat();
-        Imgproc.Canny(thresh, bw, 100, 50);
+        Imgproc.Canny(morph, bw, 100, 50);
 
         // Find the contours in the image
         List<MatOfPoint> contours = new ArrayList<>();
@@ -180,6 +184,12 @@ public class ShapeDetect
         {
             blur = Draw.contours(rects, blur);
             return blur;
+        }
+
+        if(matType == MatType.Morph)
+        {
+            morph = Draw.contours(rects, morph);
+            return morph;
         }
 
         if(matType == MatType.Thresh)
