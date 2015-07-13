@@ -79,6 +79,101 @@ public class ShapeDetect
         Imgproc.putText(image, label, point, fontFace, scale, new Scalar(0, 0, 0), thickness);
     }
 
+    public static MatOfPoint getDoor(double thresh1, double thresh2, Mat image)
+    {
+        // Create a local copy so we don't accidentally override the original
+        Mat src = image.clone();
+
+        // Convert image to hsv
+        Mat hsv = new Mat();
+        Imgproc.cvtColor(src, hsv, Imgproc.COLOR_RGB2HSV);
+        hsv.convertTo(hsv, CvType.CV_8UC1, 1, 10);
+
+        // Convert the image to greyScale
+        Mat grey = new Mat();
+        Imgproc.cvtColor(src, grey, Imgproc.COLOR_BGR2GRAY);
+
+        // Blur the image
+        Mat blur = new Mat();
+        Imgproc.blur(grey, blur, new Size(3.7, 3.7));
+
+        // Threshold the image (128, 255)
+        Mat thresh = new Mat();
+        Imgproc.threshold(blur, thresh, thresh1, thresh2, Imgproc.THRESH_BINARY);
+
+        Mat morph = new Mat();
+        Imgproc.morphologyEx(grey, morph, Imgproc.MORPH_OPEN, new Mat());
+        //Imgproc.morphologyEx(morph, morph, Imgproc.MORPH_GRADIENT, new Mat());
+
+        // Outline our images and get the edges (100, 50) Better: (150, 80)
+        Mat bw = new Mat();
+        Imgproc.Canny(morph, bw, thresh1, thresh2);
+
+        // Find the contours in the image
+        List<MatOfPoint> contours = new ArrayList<>();
+        // Imgproc.findContours(bw.clone(), contours, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+        Imgproc.findContours(bw.clone(), contours, new Mat(), Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE);
+
+        // Get ready for the magic
+        Mat dst = src.clone();
+        List<MatOfPoint> rects = new ArrayList<>();
+
+        MatOfPoint biggestDoor = null;
+        double biggestArea = 0;
+
+        for(int i = 0; i < contours.size(); i++)
+        {
+            MatOfPoint contour = contours.get(i);
+            MatOfPoint2f contourf = new MatOfPoint2f(contour.toArray());
+            MatOfPoint2f approxContour = new MatOfPoint2f();
+
+            // Get our Poly
+            double e = Imgproc.arcLength(contourf, true) * 0.02;
+            Imgproc.approxPolyDP(contourf, approxContour, e, true);
+
+            // Convert back
+            MatOfPoint approx = new MatOfPoint(approxContour.toArray());
+
+            // Skip small and non convex-objects
+            // old area was 100
+            double doorArea = Imgproc.contourArea(contour, false);
+            if(doorArea < 1000)
+                continue;
+
+            if(!Imgproc.isContourConvex(approx))
+                continue;
+
+            int sides = approx.height();
+
+            if(sides == 4)
+            {
+                Rect bounds = Imgproc.boundingRect(approx);
+                if(Detection.withinAspectRatio(bounds, 1.81, 3.29))
+                {
+                    rects.add(approx);
+                    setLabel(dst, String.valueOf(Imgproc.contourArea(contour.clone(), false)), contour);
+
+                    if(biggestDoor == null)
+                    {
+                        biggestDoor = approx;
+                    }
+                    else if(doorArea > biggestArea)
+                    {
+                        biggestArea = doorArea;
+                        biggestDoor = approx;
+                    }
+
+                }
+            }
+
+            //rects.add(approx);
+
+            //setLabel(dst, "Label", contour);
+        }
+
+        return biggestDoor;
+    }
+
     public static Mat detectShapes(double thresh1, double thresh2, Mat image, MatType matType, int... desiredSizes)
     {
         // Create a local copy so we don't accidentally override the original
@@ -168,8 +263,6 @@ public class ShapeDetect
         {
             return src;
         }
-
-
 
         if(matType == MatType.Gray)
         {
