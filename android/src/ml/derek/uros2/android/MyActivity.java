@@ -196,7 +196,9 @@ public class MyActivity extends Activity implements CameraBridgeViewBase.CvCamer
 
         if(door != null)
         {
+            regionOfIntrest = Imgproc.boundingRect(door);
             newImage = Draw.contours(newImage, door);
+            newImage = Draw.rect(regionOfIntrest, door);
             return newImage;
         }
         else
