@@ -259,6 +259,7 @@ public class MyActivity extends Activity implements CameraBridgeViewBase.CvCamer
             // angle[0] = <-->
             // angle[1] = <-\/
             // angle[2] = ^ \/
+            // Comment!
             Mat result = new Mat();
             Imgproc.matchTemplate(newImage, lastDoor, result, Imgproc.TM_SQDIFF);
             minMax = Core.minMaxLoc(result);
