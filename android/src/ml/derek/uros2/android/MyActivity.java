@@ -243,6 +243,9 @@ public class MyActivity extends Activity implements CameraBridgeViewBase.CvCamer
         }
         else if(regionOfInterest != null)
         {
+            // angle[0] = <-->
+            // angle[1] = <-\/
+            // angle[2] = ^ \/
             return newImage;
         }
         else
