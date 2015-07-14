@@ -32,14 +32,18 @@ public class MyActivity extends Activity implements CameraBridgeViewBase.CvCamer
 {
     private CameraBridgeViewBase mOpenCvCameraView;
     private MatType selectedMat = MatType.Full;
-    private Rect regionOfInterest = null;
     private double thresh1 = 150;
     private double thresh2 = 80;
+
+    private Rect regionOfInterest = null;
+    private Mat lastDoor = null;
     private float angle[] = null;
+    private float regionAngle[] = null;
 
     private SensorManager sensorManager;
     private Sensor accelerometer;
     private Sensor magnetometer;
+    private Core.MinMaxLocResult minMax = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -229,23 +233,39 @@ public class MyActivity extends Activity implements CameraBridgeViewBase.CvCamer
 
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame)
     {
+        // Get the input frame and the door if it exists from the frame
         Mat newImage = inputFrame.rgba();
         MatOfPoint door = ShapeDetect.getDoor(thresh1, thresh2, newImage);
+
+        // Draw the phones current orientation on the screen
         Imgproc.putText(newImage, Arrays.toString(angle), new Point(0, newImage.height() - 10), Core.FONT_HERSHEY_SIMPLEX, 0.3, new Scalar(255, 255, 255));
 
         if(door != null)
         {
             Rect bounds = Imgproc.boundingRect(door);
+
+            // Get our template to match when there is no door detected
+            lastDoor = new Mat(newImage.clone(), bounds.clone());
+            //Core.normalize(lastDoor, lastDoor, 0, 1, Core.NORM_MINMAX, -1, new Mat());
             regionOfInterest = bounds;
+
+            // Draw the door and its bounds onto the image to show the user
             newImage = Draw.contours(newImage, door);
             newImage = Draw.rect(bounds, newImage);
             return newImage;
         }
-        else if(regionOfInterest != null)
+        else if(lastDoor != null)
         {
             // angle[0] = <-->
             // angle[1] = <-\/
             // angle[2] = ^ \/
+            Mat result = new Mat();
+            Imgproc.matchTemplate(newImage, lastDoor, result, Imgproc.TM_SQDIFF);
+            minMax = Core.minMaxLoc(result);
+            Point match = minMax.minLoc;
+            Rect rect = new Rect(match, new Point(match.x + lastDoor.cols(), match.y + lastDoor.rows()));
+            newImage = Draw.rect(rect, newImage);
+
             return newImage;
         }
         else
