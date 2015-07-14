@@ -1,10 +1,7 @@
 package ml.derek.uros2.desktop.util;
 
 import ml.derek.uros2.desktop.Detection;
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfPoint;
-import org.opencv.core.Point;
-import org.opencv.core.Scalar;
+import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.FileNotFoundException;
@@ -118,7 +115,16 @@ public class Operations
 
     }
 
+    public static MatOfFloat range(int start, int stop)
+    {
+        float[] range = new float[stop];
+        for(int i = start, p = 0; i < stop; i++, p++)
+        {
+            range[p] = i;
+        }
 
+        return new MatOfFloat(range);
+    }
 
 
     public static Point merge(Point p1, Point p2)

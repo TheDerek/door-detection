@@ -10,28 +10,28 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.*;
-import ml.derek.uros2.desktop.Detection;
 import ml.derek.uros2.desktop.Draw;
 import ml.derek.uros2.desktop.ShapeDetect;
 import ml.derek.uros2.desktop.util.MatType;
+import ml.derek.uros2.desktop.util.Operations;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfPoint;
-import org.opencv.core.Rect;
+import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.video.Video;
 
-import java.util.Map;
+import java.util.Arrays;
 
 public class MyActivity extends Activity implements CameraBridgeViewBase.CvCameraViewListener2
 {
     private CameraBridgeViewBase mOpenCvCameraView;
     private MatType selectedMat = MatType.Full;
-    private Rect regionOfIntrest;
+    private Rect regionOfInterest = null;
     private double thresh1 = 150;
     private double thresh2 = 80;
+    private Mat roi_hist;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -196,12 +196,48 @@ public class MyActivity extends Activity implements CameraBridgeViewBase.CvCamer
 
         if(door != null)
         {
-            regionOfIntrest = Imgproc.boundingRect(door);
+            Rect bounds = Imgproc.boundingRect(door);
+            track(bounds, newImage);
             newImage = Draw.contours(newImage, door);
-            newImage = Draw.rect(regionOfIntrest, door);
+            newImage = Draw.rect(bounds, newImage);
             return newImage;
         }
-        else
+        else if(regionOfInterest != null)
+        {
+            Mat hsv = new Mat();
+            Imgproc.cvtColor(newImage, hsv, Imgproc.COLOR_BGR2HSV);
+
+            Mat dst = new Mat();
+            Imgproc.calcBackProject(Arrays.asList(hsv), new MatOfInt(0), roi_hist, dst, new MatOfFloat(0, 180), 1);
+            Video.meanShift(dst, regionOfInterest, new TermCriteria(TermCriteria.EPS, TermCriteria.COUNT, 80));
+            newImage = Draw.rect(regionOfInterest, newImage);
             return newImage;
+
+        }
+        else
+        {
+            return newImage;
+        }
+    }
+
+    private void track(Rect door, Mat image)
+    {
+        regionOfInterest = door;
+        Mat hoi = new Mat(image, regionOfInterest);
+
+        // Calculate the hsv of the roi
+        Mat hsv_roi = new Mat();
+        Imgproc.cvtColor(hoi, hsv_roi, Imgproc.COLOR_BGR2HSV);
+
+        // Mask that
+        Mat mask = new Mat();
+        Core.inRange(hsv_roi, new Scalar(0, 30, 32), new Scalar(180, 255, 255), mask);
+
+        // Histogram it
+        roi_hist = new Mat();
+        Imgproc.calcHist(Arrays.asList(hsv_roi), new MatOfInt(hsv_roi.channels()), mask, roi_hist, new MatOfInt(180), Operations.range(0, 180));
+
+        // Normalise it
+        Core.normalize(roi_hist, roi_hist, 0, 255, Core.NORM_MINMAX);
     }
 }
