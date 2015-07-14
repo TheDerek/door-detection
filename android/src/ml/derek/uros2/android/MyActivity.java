@@ -1,6 +1,10 @@
 package ml.derek.uros2.android;
 
 import android.app.Activity;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
@@ -24,14 +28,18 @@ import org.opencv.video.Video;
 
 import java.util.Arrays;
 
-public class MyActivity extends Activity implements CameraBridgeViewBase.CvCameraViewListener2
+public class MyActivity extends Activity implements CameraBridgeViewBase.CvCameraViewListener2, SensorEventListener
 {
     private CameraBridgeViewBase mOpenCvCameraView;
     private MatType selectedMat = MatType.Full;
     private Rect regionOfInterest = null;
     private double thresh1 = 150;
     private double thresh2 = 80;
-    private Mat roi_hist;
+    private float angle[] = null;
+
+    private SensorManager sensorManager;
+    private Sensor accelerometer;
+    private Sensor magnetometer;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -112,8 +120,7 @@ public class MyActivity extends Activity implements CameraBridgeViewBase.CvCamer
                     double dthresh = Double.parseDouble(s.toString());
                     if (dthresh > 0)
                         thresh2 = Double.parseDouble(s.toString());
-                }
-                catch(NumberFormatException e)
+                } catch (NumberFormatException e)
                 {
                     thresh2 = 50;
                 }
@@ -135,12 +142,17 @@ public class MyActivity extends Activity implements CameraBridgeViewBase.CvCamer
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
         mOpenCvCameraView.setCvCameraViewListener(this);
         mOpenCvCameraView.setMaxFrameSize(640, 360);
+
+        sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
     }
 
     @Override
     public void onPause()
     {
         super.onPause();
+        sensorManager.unregisterListener(this);
         if (mOpenCvCameraView != null)
             mOpenCvCameraView.disableView();
     }
@@ -172,6 +184,11 @@ public class MyActivity extends Activity implements CameraBridgeViewBase.CvCamer
     {
         super.onResume();
         OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
+
+
+        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
+        sensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_UI);
+
     }
 
     public void onDestroy()
@@ -189,55 +206,48 @@ public class MyActivity extends Activity implements CameraBridgeViewBase.CvCamer
     {
     }
 
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {  }
+
+    float[] mGravity;
+    float[] mGeomagnetic;
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
+            mGravity = event.values;
+        if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD)
+            mGeomagnetic = event.values;
+        if (mGravity != null && mGeomagnetic != null) {
+            float R[] = new float[9];
+            float I[] = new float[9];
+            boolean success = SensorManager.getRotationMatrix(R, I, mGravity, mGeomagnetic);
+            if (success) {
+                float orientation[] = new float[3];
+                SensorManager.getOrientation(R, orientation);
+                angle = orientation;
+            }
+        }
+    }
+
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame)
     {
         Mat newImage = inputFrame.rgba();
         MatOfPoint door = ShapeDetect.getDoor(thresh1, thresh2, newImage);
+        Imgproc.putText(newImage, Arrays.toString(angle), new Point(0, newImage.height() - 10), Core.FONT_HERSHEY_SIMPLEX, 0.3, new Scalar(255, 255, 255));
 
         if(door != null)
         {
             Rect bounds = Imgproc.boundingRect(door);
-            track(bounds, newImage);
+            regionOfInterest = bounds;
             newImage = Draw.contours(newImage, door);
             newImage = Draw.rect(bounds, newImage);
             return newImage;
         }
         else if(regionOfInterest != null)
         {
-            Mat hsv = new Mat();
-            Imgproc.cvtColor(newImage, hsv, Imgproc.COLOR_BGR2HSV);
-
-            Mat dst = new Mat();
-            Imgproc.calcBackProject(Arrays.asList(hsv), new MatOfInt(0), roi_hist, dst, new MatOfFloat(0, 180), 1);
-            Video.meanShift(dst, regionOfInterest, new TermCriteria(TermCriteria.EPS, TermCriteria.COUNT, 80));
-            newImage = Draw.rect(regionOfInterest, newImage);
             return newImage;
-
         }
         else
         {
             return newImage;
         }
-    }
-
-    private void track(Rect door, Mat image)
-    {
-        regionOfInterest = door;
-        Mat hoi = new Mat(image, regionOfInterest);
-
-        // Calculate the hsv of the roi
-        Mat hsv_roi = new Mat();
-        Imgproc.cvtColor(hoi, hsv_roi, Imgproc.COLOR_BGR2HSV);
-
-        // Mask that
-        Mat mask = new Mat();
-        Core.inRange(hsv_roi, new Scalar(0, 30, 32), new Scalar(180, 255, 255), mask);
-
-        // Histogram it
-        roi_hist = new Mat();
-        Imgproc.calcHist(Arrays.asList(hsv_roi), new MatOfInt(hsv_roi.channels()), mask, roi_hist, new MatOfInt(180), Operations.range(0, 180));
-
-        // Normalise it
-        Core.normalize(roi_hist, roi_hist, 0, 255, Core.NORM_MINMAX);
     }
 }
