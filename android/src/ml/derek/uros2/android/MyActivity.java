@@ -238,7 +238,17 @@ public class MyActivity extends Activity implements CameraBridgeViewBase.CvCamer
         MatOfPoint door = ShapeDetect.getDoor(thresh1, thresh2, newImage);
 
         // Draw the phones current orientation on the screen
-        Imgproc.putText(newImage, Arrays.toString(angle), new Point(0, newImage.height() - 10), Core.FONT_HERSHEY_SIMPLEX, 0.3, new Scalar(255, 255, 255));
+        if(minMax != null)
+        {
+            Imgproc.putText(newImage, "minVal : " + minMax.minVal,
+                    new Point(0, newImage.height() - 20),
+                    Core.FONT_HERSHEY_SIMPLEX, 0.3,
+                    new Scalar(255, 255, 255));
+            Imgproc.putText(newImage, "maxVal: " + minMax.maxVal,
+                    new Point(0, newImage.height() - 50),
+                    Core.FONT_HERSHEY_SIMPLEX, 0.3,
+                    new Scalar(255, 255, 255));
+        }
 
         if(door != null)
         {

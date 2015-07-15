@@ -243,6 +243,7 @@ public class ShapeDetect
                    if(sides == edgeCount)
                    {
                        Rect bounds = Imgproc.boundingRect(approx);
+                       // || Detection.withinAspectRatio(bounds, 1.2, 1.5)
                        if(Detection.withinAspectRatio(bounds, 1.81, 3.29))
                        {
                            rects.add(approx);
@@ -257,6 +258,11 @@ public class ShapeDetect
 
             //setLabel(dst, "Label", contour);
         }
+
+        // TODO: Get two most common colours in image
+        // Turn each pixel into one or the other colour depending on which one is closest
+        // Apply shape detection algorithm
+        // See what happens
 
 
         if(matType == MatType.Raw)

@@ -1,0 +1,22 @@
+<svg version="1.1"
+     baseProfile="full"
+     width="297" height="420"
+     xmlns="http://www.w3.org/2000/svg">
+  <rect height="100%" width="100%" fill="rgb(0, 33, 71)"/>
+
+  <g>
+    <rect width="100%" height="20" fill="white"/>
+    <text x="10" y="15" width="100%" height="10" fill="black"
+	  font-family="Helvetica" font-size="12">
+      DOOR DETECTION FOR
+    </text>
+     <text x="10" y="35" width="100%" height="10" fill="white"
+	   font-family="Helvetica" font-size="15" font-weight="bold">
+      THE VISUALLY IMPARED
+    </text>
+  </g>
+  <g>
+    
+    <rect x="10" y="70" width="277" height="100" fill="white"/>
+  </g>
+</svg>
