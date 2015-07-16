@@ -259,10 +259,7 @@ public class ShapeDetect
             //setLabel(dst, "Label", contour);
         }
 
-        // TODO: Get two most common colours in image
-        // Turn each pixel into one or the other colour depending on which one is closest
-        // Apply shape detection algorithm
-        // See what happens
+
 
 
         if(matType == MatType.Raw)

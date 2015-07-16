@@ -11,6 +11,11 @@ import java.util.List;
 
 public class ColourSep
 {
+    // TODO: Get two most common colours in image
+    // Turn each pixel into one or the other colour depending on which one is closest
+    // Apply shape detection algorithm
+    // See what happens
+
     public static Mat seperateColours(Mat image, int numberOfColours)
     {
         // Split the image into it's different channels, so the size
@@ -24,7 +29,7 @@ public class ColourSep
         Mat img3xN = new Mat(n, 3, CvType.CV_8U);
 
         // Magical stuff happens here, fear not weary traveller
-        for(int i = 0; i <= 3; i++)
+        for(int i = 0; i < 3; i++)
             imgRGB.get(i).reshape(1, n).copyTo(img3xN.col(i));
 
         img3xN.convertTo(img3xN, CvType.CV_32F);
