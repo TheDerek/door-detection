@@ -84,26 +84,25 @@ public class ShapeDetect
         // Create a local copy so we don't accidentally override the original
         Mat src = image.clone();
 
-        // Convert image to hsv
-        Mat hsv = new Mat();
-        Imgproc.cvtColor(src, hsv, Imgproc.COLOR_RGB2HSV);
-        hsv.convertTo(hsv, CvType.CV_8UC1, 1, 10);
+        // Cluster the images colours
+        Mat cluster = ColourSep.seperateColours(src, 3);
 
-        // Convert the image to greyScale
+        /* Convert the image to greyScale
         Mat grey = new Mat();
-        Imgproc.cvtColor(src, grey, Imgproc.COLOR_BGR2GRAY);
+        Imgproc.cvtColor(src, grey, Imgproc.COLOR_BGR2GRAY);*/
 
         // Blur the image
         Mat blur = new Mat();
-        Imgproc.blur(grey, blur, new Size(3.7, 3.7));
+        Imgproc.blur(cluster, blur, new Size(3.7, 3.7));
 
         // Threshold the image (128, 255)
         Mat thresh = new Mat();
         Imgproc.threshold(blur, thresh, thresh1, thresh2, Imgproc.THRESH_BINARY);
 
         Mat morph = new Mat();
-        Imgproc.morphologyEx(grey, morph, Imgproc.MORPH_OPEN, new Mat());
+        Imgproc.morphologyEx(blur, morph, Imgproc.MORPH_OPEN, new Mat());
         //Imgproc.morphologyEx(morph, morph, Imgproc.MORPH_GRADIENT, new Mat());
+
 
         // Outline our images and get the edges (100, 50) Better: (150, 80)
         Mat bw = new Mat();

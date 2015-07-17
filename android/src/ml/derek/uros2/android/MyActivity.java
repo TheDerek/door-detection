@@ -264,7 +264,7 @@ public class MyActivity extends Activity implements CameraBridgeViewBase.CvCamer
             newImage = Draw.rect(bounds, newImage);
             return newImage;
         }
-        else if(lastDoor != null)
+        /*else if(lastDoor != null)
         {
             // angle[0] = <-->
             // angle[1] = <-\/
@@ -278,7 +278,7 @@ public class MyActivity extends Activity implements CameraBridgeViewBase.CvCamer
             newImage = Draw.rect(rect, newImage);
 
             return newImage;
-        }
+        }*/
         else
         {
             return newImage;

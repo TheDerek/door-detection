@@ -29,8 +29,22 @@ public class Test
         double upper = 350;
         Mat shapes = ShapeDetect.detectShapes(300, 90, door, MatType.Full, 4);*/
 
-        Mat sep = ColourSep.seperateColours(door, 4);
+        Imgproc.blur(door, door, new Size(3, 3));
+        Mat sep = ColourSep.seperateColours(door, 3);
+        List<Line> lines = Detection.imageLines(sep);
 
-        JFrame frame = Display.image(sep);
+        Mat linesMat = Draw.lines(lines, door);
+
+        lines = Operations.filterLines(lines);
+        //List<Point> points = Detection.lineIntersections(lines, door.size());
+        Mat linesMat2 = Draw.lines(lines, door);
+        for(Line line : lines)
+        {
+            System.out.println(line.angle());
+        }
+        //sep = Draw.points(points, door);
+        //Imgproc.dilate(sep, sep, new Mat());
+
+        JFrame frame = Display.image(sep, linesMat, linesMat2);
     }
 }

@@ -18,6 +18,27 @@ public class Line
         intersections = new HashMap<>();
     }
 
+    public double avY()
+    {
+        return  (p1.y + p2.y) / 2d;
+    }
+
+    public double length()
+    {
+        return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
+    }
+
+    public boolean isVertical()
+    {
+        // Calculate the difference between the lines angle and the horizontal
+        // and vertical angles (0 and 90 degrees respectively)
+        double vDiff = Math.abs(Math.abs(angle()) - 90);
+        double hDiff = Math.abs(angle());
+        System.out.println(vDiff < hDiff);
+
+        return vDiff < hDiff;
+    }
+
     public void addIntersection(Line line, Point intersection)
     {
         this.intersections.put(line, intersection);

@@ -25,7 +25,8 @@ public class ColourSep
         Core.split(image, imgRGB);
 
         // Create a mat where each row is a set of RGB (?)
-        int k = 5, n = image.rows() * image.cols();
+        int k = numberOfColours;
+        int n = image.rows() * image.cols();
         Mat img3xN = new Mat(n, 3, CvType.CV_8U);
 
         // Magical stuff happens here, fear not weary traveller

@@ -36,7 +36,7 @@ public class Detection
         }
 
         // Convert image to greyscale
-        Imgproc.cvtColor(door, door, Imgproc.COLOR_BGR2GRAY);
+        //Imgproc.cvtColor(door, door, Imgproc.COLOR_BGR2GRAY);
 
         //Remove noise from the image
         Imgproc.blur(door, door, new Size(3, 3));
