@@ -40,8 +40,9 @@ public class ColourSep
         Core.kmeans(img3xN, k, bestLabels, new TermCriteria(), 10, Core.KMEANS_RANDOM_CENTERS);
 
         // Convert the result back
+        //bestLabels = bestLabels.reshape(0, image.rows());
         bestLabels = bestLabels.reshape(0, image.rows());
-        Core.convertScaleAbs(bestLabels, bestLabels, 255 / k, 0);
+        Core.convertScaleAbs(bestLabels, bestLabels, 255 / k, 2);
         return bestLabels;
     }
 }
