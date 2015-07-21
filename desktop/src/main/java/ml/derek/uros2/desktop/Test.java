@@ -38,6 +38,7 @@ public class Test
         lines = Operations.filterLines(lines);
         //List<Point> points = Detection.lineIntersections(lines, door.size());
         Mat linesMat2 = Draw.lines(lines, door);
+        Mat colours = ColourSep.seperateColours(door, 3);
         for(Line line : lines)
         {
             System.out.println(line.angle());
@@ -45,6 +46,6 @@ public class Test
         //sep = Draw.points(points, door);
         //Imgproc.dilate(sep, sep, new Mat());
 
-        JFrame frame = Display.image(door, linesMat, linesMat2);
+        JFrame frame = Display.image(door, linesMat, colours);
     }
 }
