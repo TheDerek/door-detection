@@ -14,8 +14,11 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.*;
+import ml.derek.uros2.desktop.ColourSep;
+import ml.derek.uros2.desktop.Detection;
 import ml.derek.uros2.desktop.Draw;
 import ml.derek.uros2.desktop.ShapeDetect;
+import ml.derek.uros2.desktop.util.Line;
 import ml.derek.uros2.desktop.util.MatType;
 import ml.derek.uros2.desktop.util.Operations;
 import org.opencv.android.BaseLoaderCallback;
@@ -27,6 +30,7 @@ import org.opencv.imgproc.Imgproc;
 import org.opencv.video.Video;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class MyActivity extends Activity implements CameraBridgeViewBase.CvCameraViewListener2, SensorEventListener
 {
@@ -234,11 +238,19 @@ public class MyActivity extends Activity implements CameraBridgeViewBase.CvCamer
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame)
     {
         // Get the input frame and the door if it exists from the frame
-        Mat newImage = inputFrame.rgba();
-        MatOfPoint door = ShapeDetect.getDoor(thresh1, thresh2, newImage);
+        Mat newImage, door = inputFrame.rgba();
+
+        Imgproc.blur(door, door, new Size(3, 3));
+        Mat sep = ColourSep.seperateColours(door, 3);
+        List<Line> lines = Detection.imageLines(sep);
+
+        Mat linesMat = Draw.lines(lines, door);
+
+        return linesMat;
+        //MatOfPoint door = ShapeDetect.getDoor(thresh1, thresh2, newImage);
 
         // Draw the phones current orientation on the screen
-        if(minMax != null)
+        /*if(minMax != null)
         {
             Imgproc.putText(newImage, "minVal : " + minMax.minVal,
                     new Point(0, newImage.height() - 20),
@@ -279,9 +291,9 @@ public class MyActivity extends Activity implements CameraBridgeViewBase.CvCamer
 
             return newImage;
         }*/
-        else
+        /*else
         {
             return newImage;
-        }
+        }*/
     }
 }

@@ -30,8 +30,8 @@ public class Test
         Mat shapes = ShapeDetect.detectShapes(300, 90, door, MatType.Full, 4);*/
 
         Imgproc.blur(door, door, new Size(3, 3));
-        Mat sep = ColourSep.seperateColours(door, 3);
-        List<Line> lines = Detection.imageLines(sep);
+        //Mat sep = ColourSep.seperateColours(door, 3);
+        List<Line> lines = Detection.imageLines(door);
 
         Mat linesMat = Draw.lines(lines, door);
 
@@ -45,6 +45,6 @@ public class Test
         //sep = Draw.points(points, door);
         //Imgproc.dilate(sep, sep, new Mat());
 
-        JFrame frame = Display.image(sep, linesMat, linesMat2);
+        JFrame frame = Display.image(door, linesMat, linesMat2);
     }
 }
