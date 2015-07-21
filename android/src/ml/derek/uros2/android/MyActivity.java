@@ -17,19 +17,15 @@ import android.widget.*;
 import ml.derek.uros2.desktop.ColourSep;
 import ml.derek.uros2.desktop.Detection;
 import ml.derek.uros2.desktop.Draw;
-import ml.derek.uros2.desktop.ShapeDetect;
 import ml.derek.uros2.desktop.util.Line;
 import ml.derek.uros2.desktop.util.MatType;
-import ml.derek.uros2.desktop.util.Operations;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
-import org.opencv.video.Video;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class MyActivity extends Activity implements CameraBridgeViewBase.CvCameraViewListener2, SensorEventListener
@@ -241,7 +237,7 @@ public class MyActivity extends Activity implements CameraBridgeViewBase.CvCamer
         Mat newImage, door = inputFrame.rgba();
 
         Imgproc.blur(door, door, new Size(3, 3));
-        Mat sep = ColourSep.seperateColours(door, 3);
+        Mat sep = ColourSep.separateColours(door, 3);
         List<Line> lines = Detection.imageLines(sep);
 
         Mat linesMat = Draw.lines(lines, door);

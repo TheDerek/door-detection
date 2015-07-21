@@ -16,7 +16,7 @@ public class ColourSep
     // Apply shape detection algorithm
     // See what happens
 
-    public static Mat seperateColours(Mat image, int numberOfColours)
+    public static Mat separateColours(Mat image, int numberOfColours)
     {
         // Split the image into it's different channels, so the size
         // of the list should be 3 with each mat successive mat being

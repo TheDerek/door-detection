@@ -10,7 +10,6 @@ import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Test
@@ -30,7 +29,7 @@ public class Test
         Mat shapes = ShapeDetect.detectShapes(300, 90, door, MatType.Full, 4);*/
 
         Imgproc.blur(door, door, new Size(3, 3));
-        //Mat sep = ColourSep.seperateColours(door, 3);
+        //Mat sep = ColourSep.separateColours(door, 3);
         List<Line> lines = Detection.imageLines(door);
 
         Mat linesMat = Draw.lines(lines, door);
@@ -38,11 +37,8 @@ public class Test
         lines = Operations.filterLines(lines);
         //List<Point> points = Detection.lineIntersections(lines, door.size());
         Mat linesMat2 = Draw.lines(lines, door);
-        Mat colours = ColourSep.seperateColours(door, 3);
-        for(Line line : lines)
-        {
-            System.out.println(line.angle());
-        }
+        Mat colours = ColourSep.separateColours(door, 3);
+
         //sep = Draw.points(points, door);
         //Imgproc.dilate(sep, sep, new Mat());
 

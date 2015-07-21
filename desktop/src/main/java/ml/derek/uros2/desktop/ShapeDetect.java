@@ -3,12 +3,9 @@ package ml.derek.uros2.desktop;
 import ml.derek.uros2.desktop.util.MatType;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ShapeDetect
 {
@@ -85,7 +82,7 @@ public class ShapeDetect
         Mat src = image.clone();
 
         // Cluster the images colours
-        Mat cluster = ColourSep.seperateColours(src, 3);
+        Mat cluster = ColourSep.separateColours(src, 3);
 
         /* Convert the image to greyScale
         Mat grey = new Mat();
