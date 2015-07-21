@@ -203,7 +203,7 @@ public class ShapeDetect
         if(matType == MatType.Contours)
         {
             //Mat c = new Mat(src.size(), src.type());
-            Mat c = grey.clone();
+            Mat c = new Mat(src.width(), src.height(), src.type());
             Draw.contours(contours, c);
             c.copyTo(resultImage);
         }
