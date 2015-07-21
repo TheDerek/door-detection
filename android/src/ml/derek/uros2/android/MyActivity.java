@@ -235,7 +235,8 @@ public class MyActivity extends Activity implements CameraBridgeViewBase.CvCamer
     {
         // Get the input frame and the door if it exists from the frame
         Mat newImage = inputFrame.rgba();
-        MatOfPoint door = ShapeDetect.getDoor(thresh1, thresh2, newImage);
+        Mat result = new Mat();
+        MatOfPoint door = ShapeDetect.getDoor(thresh1, thresh2, newImage, newImage, selectedMat);
 
         // Draw the phones current orientation on the screen
         if(minMax != null)
@@ -270,7 +271,6 @@ public class MyActivity extends Activity implements CameraBridgeViewBase.CvCamer
             // angle[1] = <-\/
             // angle[2] = ^ \/
             // Comment!
-            Mat result = new Mat();
             Imgproc.matchTemplate(newImage, lastDoor, result, Imgproc.TM_SQDIFF);
             minMax = Core.minMaxLoc(result);
             Point match = minMax.minLoc;

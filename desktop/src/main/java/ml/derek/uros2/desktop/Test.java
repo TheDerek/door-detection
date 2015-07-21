@@ -27,8 +27,8 @@ public class Test
         // Best: (350, 115) (300, 90)
         double ratio = 1/3;
         double upper = 350;
-        Mat shapes = ShapeDetect.detectShapes(300, 90, door, MatType.Full, 4);
+        //Mat shapes = ShapeDetect
 
-        JFrame frame = Display.image(shapes);
+        //JFrame frame = Display.image(shapes);
     }
 }
