@@ -146,6 +146,9 @@ public class Operations
             int count = 0;
             for(Point point : points)
             {
+                if(!new Rect(line.p1, line.p2).contains(point))
+                    continue;
+
                 if(line.distance(point) < radius)
                     count++;
             }

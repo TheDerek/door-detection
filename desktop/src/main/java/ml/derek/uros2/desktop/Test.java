@@ -33,10 +33,15 @@ public class Test
         List<Line> lines = Detection.imageLines(door);
         Map<Integer, Line> topLines = Operations.trim(lines, corners.toList(), 10);
 
+        List<Line> rect = new ArrayList<>();
+        for (int i = 0; i < 4; i++)
+        {
+           rect.add((Line) topLines.values().toArray()[i]);
+        }
 
         Mat mat = Draw.points(corners.toArray(), door);
-        mat = Draw.lines(lines, mat);
-
+        mat = Draw.lines(lines, mat, new Scalar(0, 255, 0));
+        mat = Draw.lines(rect, mat, new Scalar(255, 0, 0));
 
         JFrame frame = Display.image(mat);
     }

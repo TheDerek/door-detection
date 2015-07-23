@@ -108,7 +108,7 @@ public class Draw
         return drawing;
     }
 
-    public static Mat lines(List<Line> lines, Mat baseImage)
+    public static Mat lines(List<Line> lines, Mat baseImage, Scalar colour)
     {
         // Copy the baseImage so we don't override it
         Mat drawing = baseImage.clone();
@@ -118,8 +118,7 @@ public class Draw
 
         for(Line line : lines)
         {
-            Scalar color = new Scalar(rng.nextInt(255), rng.nextInt(255), rng.nextInt(255));
-            Imgproc.line(drawing, line.p1, line.p2, color, 1);
+            Imgproc.line(drawing, line.p1, line.p2, colour, 2);
         }
 
         // Return the new image with the lines
