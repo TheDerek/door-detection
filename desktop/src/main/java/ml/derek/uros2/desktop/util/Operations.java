@@ -6,10 +6,7 @@ import org.opencv.imgproc.Imgproc;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class Operations
 {
@@ -128,12 +125,8 @@ public class Operations
         return new MatOfFloat(range);
     }
 
-    public static List<Line> trim(List<Line> lines, List<Point> points)
-    {
-        return null;
-    }
 
-    public static List<Line> trim(List<Line> unfiltered, List<Point> points)
+    public static Map<Integer, Line> trim(List<Line> unfiltered, List<Point> points, double radius)
     {
         // We need to get 4 lines that represent the door
         // We will get the two longest vertical lines and
@@ -147,45 +140,20 @@ public class Operations
             }
         });
 
-        double minDist = 400;
-        List<Line> filtered = new ArrayList<>();
-        int horizontalLinesRemaining = 2;
-        int verticalLinesRemaining = 2;
-
-        Line lastHorizontalLine = null;
-
+        TreeMap<Integer, Line> intersections = new TreeMap<>();
         for(Line line : unfiltered)
         {
-            if(line.isVertical() && verticalLinesRemaining > 0)
+            int count = 0;
+            for(Point point : points)
             {
-                verticalLinesRemaining -= 1;
-                filtered.add(line);
-            }
-            else if(!line.isVertical() && horizontalLinesRemaining > 0)
-            {
-                if(lastHorizontalLine != null)
-                {
-                    double dst = Math.abs(lastHorizontalLine.avY() - line.avY());
-                    if(dst > minDist)
-                    {
-                        horizontalLinesRemaining -= 1;
-                        filtered.add(line);
-                        break;
-                    }
-                } else
-                {
-                    horizontalLinesRemaining -= 1;
-                    filtered.add(line);
-                    lastHorizontalLine = line;
-                }
+                if(line.distance(point) < radius)
+                    count++;
             }
 
-            if(horizontalLinesRemaining == 0 && verticalLinesRemaining == 0)
-                break;
-
+            intersections.put(count, line);
         }
 
-        return filtered;
+        return intersections.descendingMap();
 
     }
 

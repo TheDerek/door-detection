@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Test
 {
@@ -30,6 +31,7 @@ public class Test
 
         MatOfPoint corners = Detection.getCorners2(door);
         List<Line> lines = Detection.imageLines(door);
+        Map<Integer, Line> topLines = Operations.trim(lines, corners.toList(), 10);
 
 
         Mat mat = Draw.points(corners.toArray(), door);
