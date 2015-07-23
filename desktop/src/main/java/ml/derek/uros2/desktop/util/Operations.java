@@ -126,6 +126,11 @@ public class Operations
         return new MatOfFloat(range);
     }
 
+    public static List<Line> trim(List<Line> lines, List<Point> points)
+    {
+        return null;
+    }
+
 
     public static Point merge(Point p1, Point p2)
     {

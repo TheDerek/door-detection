@@ -17,18 +17,25 @@ public class Test
 {
     public static void main(String[] args) throws IOException
     {
-        System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
         //File file = new File("shapes/rects.jpg");
-        File file = new File("simple/far2.jpg");
+        File file = new File("simple/close2.jpg");
         BufferedImage image = ImageIO.read(file);
         Mat door = Convert.mat(image);
 
         // Best: (350, 115) (300, 90)
         double ratio = 1/3;
         double upper = 350;
-        //Mat shapes = ShapeDetect
 
-        //JFrame frame = Display.image(shapes);
+        MatOfPoint corners = Detection.getCorners2(door);
+        List<Line> lines = Detection.imageLines(door);
+
+
+        Mat mat = Draw.points(corners.toArray(), door);
+        mat = Draw.lines(lines, mat);
+
+
+        JFrame frame = Display.image(mat);
     }
 }
