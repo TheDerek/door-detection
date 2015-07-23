@@ -7,6 +7,8 @@ import org.opencv.imgproc.Imgproc;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Operations
@@ -129,6 +131,62 @@ public class Operations
     public static List<Line> trim(List<Line> lines, List<Point> points)
     {
         return null;
+    }
+
+    public static List<Line> trim(List<Line> unfiltered, List<Point> points)
+    {
+        // We need to get 4 lines that represent the door
+        // We will get the two longest vertical lines and
+        // the two longest horizontal lines
+        Collections.sort(unfiltered, new Comparator<Line>()
+        {
+            @Override
+            public int compare(Line l1, Line l2)
+            {
+                return l1.length() > l2.length() ? -1 : 1;
+            }
+        });
+
+        double minDist = 400;
+        List<Line> filtered = new ArrayList<>();
+        int horizontalLinesRemaining = 2;
+        int verticalLinesRemaining = 2;
+
+        Line lastHorizontalLine = null;
+
+        for(Line line : unfiltered)
+        {
+            if(line.isVertical() && verticalLinesRemaining > 0)
+            {
+                verticalLinesRemaining -= 1;
+                filtered.add(line);
+            }
+            else if(!line.isVertical() && horizontalLinesRemaining > 0)
+            {
+                if(lastHorizontalLine != null)
+                {
+                    double dst = Math.abs(lastHorizontalLine.avY() - line.avY());
+                    if(dst > minDist)
+                    {
+                        horizontalLinesRemaining -= 1;
+                        filtered.add(line);
+                        break;
+                    }
+                } else
+                {
+                    horizontalLinesRemaining -= 1;
+                    filtered.add(line);
+                    lastHorizontalLine = line;
+                }
+            }
+
+            if(horizontalLinesRemaining == 0 && verticalLinesRemaining == 0)
+                break;
+
+        }
+
+        return filtered;
+
     }
 
 
