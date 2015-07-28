@@ -69,12 +69,12 @@ public class Draw
         return drawing;
     }
 
-    public static Mat points(List<Point> points, Mat baseImage)
+    public static Mat points(List<Point> points, Mat baseImage, Scalar scalar)
     {
         Mat drawing = baseImage.clone();
         for(Point p1 : points)
         {
-            Imgproc.circle(drawing, p1, 5, new Scalar(0, 255, 0), 1, 8, 0);
+            Imgproc.circle(drawing, p1, 5, scalar, 1, 8, 0);
         }
 
         return drawing;
