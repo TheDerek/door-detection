@@ -21,7 +21,7 @@ public class Test
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
         //File file = new File("shapes/rects.jpg");
-        File file = new File("simple/close2.jpg");
+        File file = new File("simple/far2.jpg");
         BufferedImage image = ImageIO.read(file);
         Mat door = Convert.mat(image);
 
@@ -29,19 +29,18 @@ public class Test
         double ratio = 1/3;
         double upper = 350;
 
-        MatOfPoint corners = Detection.getCorners2(door);
+        //MatOfPoint corners = Detection.getCorners2(door);
         List<Line> lines = Detection.imageLines(door);
-        Map<Integer, Line> topLines = Operations.trim(lines, corners.toList(), 10);
+        List<Point> corners = Detection.lineIntersections(lines, door.size());
 
-        List<Line> rect = new ArrayList<>();
-        for (int i = 0; i < 4; i++)
-        {
-           rect.add((Line) topLines.values().toArray()[i]);
-        }
+        MatOfPoint pointsMat = new MatOfPoint(corners.toArray(new Point[corners.size()]));
+        Mat bestLabels = new Mat();
+        Core.kmeans(pointsMat, 4, bestLabels, new TermCriteria(TermCriteria.EPS, 10, 0.3), 5 ,0);
+        //List<Line> topLines = Operations.trim(lines, corners.toList(), 10);
 
-        Mat mat = Draw.points(corners.toArray(), door);
-        mat = Draw.lines(lines, mat, new Scalar(0, 255, 0));
-        mat = Draw.lines(rect, mat, new Scalar(255, 0, 0));
+        Mat mat = Draw.lines(lines, door, new Scalar(255, 0, 0));
+        mat = Draw.points(corners, mat);
+        //Core.kmeans(new Mat())
 
         JFrame frame = Display.image(mat);
     }

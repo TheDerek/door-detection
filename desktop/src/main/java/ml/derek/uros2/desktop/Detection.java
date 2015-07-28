@@ -46,7 +46,7 @@ public class Detection
 
         // Extract the lines from the image
         Mat lines = new Mat();
-        Imgproc.HoughLinesP(door, lines, 1, Math.PI / 180, 100, 100, 200);
+        Imgproc.HoughLinesP(door, lines, 1, Math.PI / 180, 100, 100, 100);
 
         List<Line> list = Convert.list(lines);
         List<Line> finalList = new ArrayList<>();
@@ -74,6 +74,9 @@ public class Detection
                 if(!l1.equals(l2))
                 {
                     Point intersection = l1.intersects(l2);
+
+
+                    if((new Rect(l2.p1, l2.p2).contains(intersection)) || (new Rect(l1.p1, l1.p2).contains(intersection)))
                     if(intersection.inside(boundRect))
                     {
                         points.add(intersection);

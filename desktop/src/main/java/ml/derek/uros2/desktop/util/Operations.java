@@ -126,7 +126,7 @@ public class Operations
     }
 
 
-    public static Map<Integer, Line> trim(List<Line> unfiltered, List<Point> points, double radius)
+    public static List<Line> trim(List<Line> unfiltered, List<Point> points, double radius)
     {
         // We need to get 4 lines that represent the door
         // We will get the two longest vertical lines and
@@ -146,7 +146,7 @@ public class Operations
             int count = 0;
             for(Point point : points)
             {
-                if(!new Rect(line.p1, line.p2).contains(point))
+                if(!(new Rect(line.p1, line.p2).contains(point)))
                     continue;
 
                 if(line.distance(point) < radius)
@@ -156,8 +156,28 @@ public class Operations
             intersections.put(count, line);
         }
 
-        return intersections.descendingMap();
+        List<Line> lines = new ArrayList<>();
+        int count = 0;
+        for(Line line : intersections.values())
+        {
+            if (count < 2)
+            {
+                lines.add(line);
+                count++;
+            } else
+            {
+                if(count >= 4)
+                    return lines;
 
+                if(!line.isVertical())
+                {
+                    lines.add(line);
+                    count++;
+                }
+            }
+        }
+
+        return lines;
     }
 
 
