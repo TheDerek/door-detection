@@ -35,6 +35,7 @@ public class Test
         List<Point> clusters = new ArrayList<>(Cluster.cluster(corners, door.size(), 5, 8));
         System.out.println("Number of clusters: " + clusters.size());
 
+
         Mat mat = Draw.lines(lines, door, new Scalar(255, 0, 0));
         mat = Draw.points(corners, mat, new Scalar(0, 255, 0));
         mat = Draw.points(clusters, mat, new Scalar(255, 0, 0));

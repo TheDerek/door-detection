@@ -1,22 +1,91 @@
-<svg version="1.1"
-     baseProfile="full"
-     width="297" height="420"
-     xmlns="http://www.w3.org/2000/svg">
-  <rect height="100%" width="100%" fill="rgb(0, 33, 71)"/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
 
-  <g>
-    <rect width="100%" height="20" fill="white"/>
-    <text x="10" y="15" width="100%" height="10" fill="black"
-	  font-family="Helvetica" font-size="12">
-      DOOR DETECTION FOR
-    </text>
-     <text x="10" y="35" width="100%" height="10" fill="white"
-	   font-family="Helvetica" font-size="15" font-weight="bold">
-      THE VISUALLY IMPARED
-    </text>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 744.09448819 1052.3622047"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="poster.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.7"
+     inkscape:cx="14.204906"
+     inkscape:cy="525.68841"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1030"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Background">
+    <rect
+       style="fill:#00beed;fill-opacity:1;stroke:none;stroke-width:4.80000019;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4209"
+       width="744.28571"
+       height="885.71436"
+       x="1.4285715"
+       y="166.64792"
+       rx="1.06075"
+       ry="0.74631363" />
+    <rect
+       style="fill:#00204e;fill-opacity:1;stroke:none;stroke-width:4.80000019;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4209-0"
+       width="748.57141"
+       height="177.14296"
+       x="-0.71428359"
+       y="-4.7806926"
+       rx="1.0668579"
+       ry="0.1492628" />
   </g>
-  <g>
-    
-    <rect x="10" y="70" width="277" height="100" fill="white"/>
-  </g>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot3336"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:53.43751907px;line-height:125%;font-family:'Helvetica LT Std';-inkscape-font-specification:'Helvetica LT Std Bold';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       transform="matrix(0.97387059,0,0,0.97387059,-111.06402,28.362478)"><flowRegion
+         id="flowRegion3338"><rect
+           id="rect3340"
+           width="969.50928"
+           height="211.8416"
+           x="5.4587855"
+           y="3.644002"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Helvetica LT Std';-inkscape-font-specification:'Helvetica LT Std Bold';text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:1" /></flowRegion><flowPara
+         id="flowPara3344">DOOR DETECTION FOR THE VISUALLY IMPARED</flowPara></flowRoot>  </g>
 </svg>
