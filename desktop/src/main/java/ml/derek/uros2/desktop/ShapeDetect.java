@@ -79,7 +79,7 @@ public class ShapeDetect
         Imgproc.putText(image, label, point, fontFace, scale, new Scalar(0, 0, 0), thickness);
     }
 
-    public static MatOfPoint getDoor(double thresh1, double thresh2, Mat image, Mat resultImage, MatType matType)
+    public static MatOfPoint FgetDoor(double thresh1, double thresh2, Mat image, Mat resultImage, MatType matType)
     {
         // Create a local copy so we don't accidentally override the original
         Mat src = image.clone();

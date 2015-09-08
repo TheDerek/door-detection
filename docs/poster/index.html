@@ -14,6 +14,9 @@
     <link href="css/material.min.css" rel="stylesheet">
     <link href="css/ripples.min.css" rel="stylesheet">
 
+    <!-- Custom -->
+    <link href="css/application.css" rel="stylesheet">
+
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js">
       </script>
@@ -74,17 +77,7 @@
       <div class="row">
         <div class="col-md-6">
           <div class="panel panel-default">
-            <div class="panel-heading">Android</div>
-            <div class="panel-body">
-              <ul>
-                <li>Worlds most popular phone operating system.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="panel panel-default">
-            <div class="panel-heading">Process</div>
+            <div class="panel-heading">Preparation</div>
             <div class="panel-body">
               The raw image is first broken down into a binary edge map before
               the door detection algorithm is applied. The process is explained
@@ -108,6 +101,48 @@
               </ol>
               After the above operations the resultant binary image is now
               ready for the detection part of the algorithm to operate on.
+              <img class="img-responsive" src="images/prep.png">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">Detection</div>
+            <div class="panel-body">
+              Once the image has been prepared as described in the preparation
+              panel, the detection of the door (if it exists) is commenced.
+              <ol>
+                <li>
+                  First the contours of the edge map are extracted using
+                  the OpenCV function <em>findContours</em>.
+                </li>
+                <li>
+                  Contours which fulfil the conditions to be a polygon
+                  are then added to a separate list. The remaining contours
+                  are then discarded.
+                </li>
+                <li>
+                  The list of polygons are then filtered based on their area.
+                  Any polygons with an area below a certain value are discarded
+                  due to them being too small to be a door.
+                </li>
+                <li>
+                  The remaining polygons are then filtered based on their number
+                  of sides. Any polygons without 4 sides are discarded, thus
+                  leaving a list of quadrilaterals.
+                </li>
+                <li>
+                  The quadrilaterals are then filtered based on their height to
+                  width ratio. Any quadrilaterals that have a ratio outside of
+                  the bounds of a single door is discarded.
+                </li>
+                <li>
+                  The largest quadrilateral (if present) is then selected as the
+                  detected door. This door is then tracked using image recognition
+                  until a new door is detected.
+                </li>
+              </ol>
+              <img class="img-responsive" src="images/detected.png">
             </div>
           </div>
         </div>
