@@ -25,9 +25,13 @@
     <![endif]-->
   </head>
   <body>
-    <div class="header-panel">
+    <div class="banner shadow-z-1">
       <div class="container">
-        <h1>Door Detection for the Visually Impaired</h1>
+        <h1>
+          Door Detection for the Visually Impaired
+          <br>
+          <small>Derek Sewell (dereksewell@directways.co.uk)</small>
+        </h1>
       </div>
     </div>
     <div class="container">
@@ -104,6 +108,25 @@
               <img class="img-responsive" src="images/prep.png">
             </div>
           </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">Further Ideas</div>
+            <div class="panel-body">
+              Although the core detection is completed there is plenty
+              of room for improvement and expansion. 
+              <ul>
+                <li>
+                  Compare the HSV chart of the detected door with the
+                  surroundings and other detected doors. Check to see
+                  if the values match that of what is normally expected
+                  of a door i.e a uniform colour gradient.
+                </li>
+                <li>
+                  Guide the user to the door using sound cues and tactile
+                  sensors that are connected to the users Android device.
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
         <div class="col-md-6">
           <div class="panel panel-default">
@@ -138,10 +161,11 @@
                 </li>
                 <li>
                   The largest quadrilateral (if present) is then selected as the
-                  detected door. This door is then tracked using image recognition
-                  until a new door is detected.
+                  detected door.
                 </li>
               </ol>
+              The door is then tracked using the OpenCV function
+              <em>matchTemplate</em> until a new door is detected.
               <img class="img-responsive" src="images/detected.png">
             </div>
           </div>

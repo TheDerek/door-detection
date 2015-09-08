@@ -3,9 +3,32 @@ body {
 }
 
 img {
-    margin: 5px;
 }
 
 ol {
     margin-top: 10px;
+}
+
+.panel-default > .panel-heading {
+    color: white;
+    background-color: #3F51B5;
+}
+
+.banner {
+    color: white;
+    background-color: #3F51B5;
+    margin-bottom: 30px;
+    padding-top: 30px;
+    padding-bottom: 10px;
+}
+
+.img-responsive {
+    margin: 0 auto;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+h1 small {
+    color: white;
+    font-size: 50%;
 }
