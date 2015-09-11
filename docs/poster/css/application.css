@@ -34,3 +34,11 @@ footer {
 .logo {
     height: 200px;
 }
+
+dl {
+    margin-bottom: 0px;
+}
+
+dl dd {
+    margin-bottom: 10px;
+}
