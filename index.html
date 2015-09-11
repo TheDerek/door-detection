@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Door Detection for the Visually Impaired</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Material Design -->
+    <link href="css/roboto.min.css" rel="stylesheet">
+    <link href="css/material.min.css" rel="stylesheet">
+    <link href="css/ripples.min.css" rel="stylesheet">
+
+    <!-- Custom -->
+    <link href="css/application.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js">
+      </script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js">
+      </script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="banner shadow-z-1">
+      <div class="container">
+        <h1>
+          Door Detection for the Visually Impaired
+          <br>
+          <small>Derek Sewell (dereksewell@directways.co.uk)</small>
+        </h1>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              Introduction
+            </div>
+            <div class="panel-body">
+              <ul>
+                <li>
+                  Detect doors in order to assist the visually impaired with
+                  indoor navigation.
+                </li>
+                <li>Works with Android smart phones and tablets.</li>
+                <li>Uses a novel geometric based approach.</li>
+              </ul> 
+              <img class="img-responsive" src="images/android.png">
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">Preparation</div>
+            <div class="panel-body">
+              The raw image is first broken down into a binary edge map before
+              the door detection algorithm is applied. The process is explained
+              below.
+              <ol>
+                <li>Raw image is first converted to grey scale.</li>
+                <li>
+                  The image is then blurred to remove noise which would
+                  otherwise interfere with the detection process.
+                </li>
+                <li>
+                  A threshold is then applied to the image to reduce the
+                  number of shades of grey present and thus simplify the
+                  detection process.
+                </li>
+                <li>
+                  The Canny edge detection algorithm is then applied. With
+                  the above operations the edge map produced by Canny is
+                  heavily optimised towards detecting doors.
+                </li> 
+              </ol>
+              After the above operations the resultant binary image is now
+              ready for the detection part of the algorithm to operate on.
+              <img class="img-responsive" src="images/prep.png">
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">Further Reading</div>
+            <div class="panel-body">
+              <dl>
+                <dt>Project source code</dt>
+                <dd><a href="#">github.com/thederek/door-detection</a></dd>
+                <dt>Lincoln Center for Autonomous Research</dt>
+                <dd>
+                  <a href="http://lcas.lincoln.ac.uk">lcas.lincoln.ac.uk</a>
+                </dd>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              Advantages
+            </div>
+            <div class="panel-body">
+              <ul>
+                <li>
+                  Increases the accessibility of indoor locations for the
+                  visually impaired.
+                </li>
+                <li>
+                  No additional infrastructure needs to be purchased by the
+                  building owner.
+                </li>
+                <li>
+                  Application is fast enough to be used on a modern smartphone
+                  which most people would already have. This means that very
+                  few people would have to purchase new hardware.
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">Detection</div>
+            <div class="panel-body">
+              Once the image has been prepared as described in the preparation
+              panel, the detection of the door (if it exists) is commenced.
+              <ol>
+                <li>
+                  First the contours of the edge map are extracted using
+                  the OpenCV function <em>findContours</em>.
+                </li>
+                <li>
+                  Contours which fulfil the conditions to be a polygon
+                  are then added to a separate list. The remaining contours
+                  are then discarded.
+                </li>
+                <li>
+                  The list of polygons are then filtered based on their area.
+                  Any polygons with an area below a certain value are discarded
+                  due to them being too small to be a door.
+                </li>
+                <li>
+                  The remaining polygons are then filtered based on their number
+                  of sides. Any polygons without 4 sides are discarded, thus
+                  leaving a list of quadrilaterals.
+                </li>
+                <li>
+                  The quadrilaterals are then filtered based on their height to
+                  width ratio. Any quadrilaterals that have a ratio outside of
+                  the bounds of a single door is discarded.
+                </li>
+                <li>
+                  The largest quadrilateral (if present) is then selected as the
+                  detected door.
+                </li>
+              </ol>
+              The door is then tracked using the OpenCV function
+              <em>matchTemplate</em> until a new door is detected.
+              <img class="img-responsive" src="images/detected.png">
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">Further Ideas</div>
+            <div class="panel-body">
+              Although the core detection is completed there is plenty
+              of room for improvement and expansion. 
+              <ul>
+                <li>
+                  Compare the HSV chart of the detected door with the
+                  surroundings and other detected doors. Check to see
+                  if the values match that of what is normally expected
+                  of a door i.e a uniform colour gradient.
+                </li>
+                <li>
+                  Guide the user to the door using sound cues and tactile
+                  sensors that are connected to the users Android device.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <div class="container">
+        <div class="pull-right">
+          <img class="img-responsive logo" src="images/uni.png">
+        </div>
+    </footer>
+    <script
+       src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
+    <script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/ripples.min.js"></script>
+    <script src="js/material.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        // This command is used to initialize some elements and make them work properly
+        $.material.init();
+      });
+    </script>
+  </body>
+</html>
