@@ -27,23 +27,33 @@
   <body>
     <div class="banner shadow-z-1">
       <div class="container">
-        <h1>
-          Door Detection for the Visually Impaired
-          <br>
-          <small>
-              Derek Sewell (dereksewell@directways.co.uk)
-              &nbsp;&nbsp;
-              Nicola Bellotto (nbellotto@lincoln.ac.uk)
-          </small>
+        <h1 class="header">
+          <div class="row header-content">
+            <div class="col-xs-8">
+              <span class="title">Door Detection for the Visually Impaired</span>
+              <br>
+                <small>
+                  <span class="name-1">Derek Sewell (mail@derek.tech)</span>
+                  <br class="sep">
+                  <span class="name-2">Nicola Bellotto (nbellotto@lincoln.ac.uk)</span>
+                </small>
+            </div>
+            <div class="col-xs-2">
+              <img class="img-responsive logo logo-uni" src="images/uni.png">
+            </div>
+            <div class="col-xs-2">
+              <img class="img-responsive logo logo-lcas" src="images/lcas.png">
+            </div>
+          </div>
         </h1>
       </div>
     </div>
     <div class="container">
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-xs-6">
           <div class="panel panel-default">
             <div class="panel-heading">
-              Introduction
+                <strong class="num">1</strong> Introduction
             </div>
             <div class="panel-body">
               <ul>
@@ -58,7 +68,7 @@
             </div>
           </div>
           <div class="panel panel-default">
-            <div class="panel-heading">Preparation</div>
+              <div class="panel-heading"><strong class="num">3</strong> Preparation</div>
             <div class="panel-body">
               The raw image is first broken down into a binary edge map before
               the door detection algorithm is applied. The process is explained
@@ -75,18 +85,16 @@
                   detection process.
                 </li>
                 <li>
-                  The Canny edge detection algorithm is then applied. With
-                  the above operations the edge map produced by Canny is
-                  heavily optimised towards detecting doors.
-                </li> 
+                  The Canny edge detection algorithm is then applied.
+                </li>
               </ol>
               After the above operations the resultant binary image is now
               ready for the detection part of the algorithm to operate on.
-              <img class="img-responsive" src="images/prep.png">
+              <img class="img-responsive" src="images/prep-2.png">
             </div>
           </div>
           <div class="panel panel-default">
-            <div class="panel-heading">Further Reading</div>
+              <div class="panel-heading"><strong class="num">5</strong> Further Reading</div>
             <div class="panel-body">
               <dl>
                 <dt>Project source code</dt>
@@ -98,10 +106,10 @@
             </div>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-xs-6">
           <div class="panel panel-default">
             <div class="panel-heading">
-              Advantages
+                <strong class="num">2</strong> Advantages
             </div>
             <div class="panel-body">
               <ul>
@@ -115,14 +123,13 @@
                 </li>
                 <li>
                   Application is fast enough to be used on a modern smartphone
-                  which most people would already have. This means that very
-                  few people would have to purchase new hardware.
+                  which most people would already have. 
                 </li>
               </ul>
             </div>
           </div>
           <div class="panel panel-default">
-            <div class="panel-heading">Detection</div>
+              <div class="panel-heading"><strong class="num">4</strong> Detection</div>
             <div class="panel-body">
               Once the image has been prepared as described in the preparation
               panel, the detection of the door (if it exists) is commenced.
@@ -162,10 +169,8 @@
             </div>
           </div>
           <div class="panel panel-default">
-            <div class="panel-heading">Further Ideas</div>
+              <div class="panel-heading"><strong class="num">6</strong> Further Work</div>
             <div class="panel-body">
-              Although the core detection is completed there is plenty
-              of room for improvement and expansion. 
               <ul>
                 <li>
                   Compare the HSV chart of the detected door with the
@@ -186,18 +191,16 @@
     <footer>
       <div class="container">
           <div class="row">
-              <div class="col-md-4 text-center">
-                  <img class="img-responsive logo" src="images/uni.png">
+            <div class="col-xs-2">
+              <img class="img-responsive logo-uros" src="images/uros.png">
+            </div>
+            <div class="col-xs-2">
+              <div class="url">
+                <h3>edeu.lincoln.ac.uk/uros</h3>
               </div>
-              <div class="col-md-4 text-center">
-                  <img class="img-responsive logo" src="images/uros.png">
-              </div>
-              <div class="col-md-4 text-center">
-                  <img class="img-responsive logo" src="images/lcas.png">
-              </div>
-          </div> 
-        <div class="pull-right">
-        </div>
+            </div>
+          </div>
+      </div>
     </footer>
     <script
        src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
